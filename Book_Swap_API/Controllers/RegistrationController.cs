@@ -51,7 +51,7 @@ namespace Book_Swap_API.Controllers
                 return new Response()
                 {
                     statusCode = System.Net.HttpStatusCode.BadRequest,
-                    statusMessage = "Data NotvInserted "
+                    statusMessage = "Email already Exist"
                 };
             }
             catch(Exception ex)
