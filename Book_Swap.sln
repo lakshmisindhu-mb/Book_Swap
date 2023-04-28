@@ -3,7 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_Swap_API", "Book_Swap\Book_Swap_API.csproj", "{D626CC82-DFA8-4380-B140-01E905EF5D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_Swap_Models", "Book_Swap_Models\Book_Swap_Models.csproj", "{EF7EB812-321A-4851-943A-BC8F686D31D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_Swap_Service", "Book_Swap_Service\Book_Swap_Service.csproj", "{B97E0A21-C50F-47F0-9322-79FAC2A27A0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_Swap_DL", "Book_Swap_DL\Book_Swap_DL.csproj", "{5FB6F248-E509-4D5B-801E-A1010B65A323}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D626CC82-DFA8-4380-B140-01E905EF5D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D626CC82-DFA8-4380-B140-01E905EF5D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D626CC82-DFA8-4380-B140-01E905EF5D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D626CC82-DFA8-4380-B140-01E905EF5D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF7EB812-321A-4851-943A-BC8F686D31D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF7EB812-321A-4851-943A-BC8F686D31D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF7EB812-321A-4851-943A-BC8F686D31D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF7EB812-321A-4851-943A-BC8F686D31D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97E0A21-C50F-47F0-9322-79FAC2A27A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97E0A21-C50F-47F0-9322-79FAC2A27A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97E0A21-C50F-47F0-9322-79FAC2A27A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97E0A21-C50F-47F0-9322-79FAC2A27A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB6F248-E509-4D5B-801E-A1010B65A323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB6F248-E509-4D5B-801E-A1010B65A323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB6F248-E509-4D5B-801E-A1010B65A323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB6F248-E509-4D5B-801E-A1010B65A323}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
