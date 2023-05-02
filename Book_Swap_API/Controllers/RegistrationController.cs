@@ -25,9 +25,10 @@ namespace Book_Swap_API.Controllers
             {
                 DataTable user = new DataTable();
                 SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
-                SqlCommand checkMail = new SqlCommand("Select * from [User] where(EmailId='" + registration.EmailId + "')", connection);
-                SqlCommand command = new SqlCommand("INSERT INTO [User](UserName,UserKey,EmailId,CreatedDate) Values('" + registration.UserName + "','" + registration.UserKey + "','" + registration.EmailId + "',GETDATE())", connection);
 
+                SqlCommand checkMail = new SqlCommand("Select * from [User] where(EmailId='" + registration.EmailId + "')", connection);
+                SqlCommand command = new SqlCommand("INSERT INTO [User](UserName,UserKey,EmailId,IsActive,CreatedDate) Values('" + registration.UserName + "','" + registration.UserKey + "','" + registration.EmailId + "','" + 1 + "',GETDATE())", connection);
+                
                 connection.Open();
                 SqlDataAdapter da = new SqlDataAdapter(checkMail);
                 da.Fill(user);
@@ -98,6 +99,52 @@ namespace Book_Swap_API.Controllers
                 {
                     statusCode = System.Net.HttpStatusCode.BadRequest,
                     statusMessage = string.Format("Login user failed. Exception details are: {0}", ex.Message)
+                };
+            }
+
+        }
+
+
+        [HttpPost]
+        [Route("Deleteuser")]     
+        public Response Deleteuser(string email)
+        {
+            try
+            {
+                DataTable user = new DataTable();
+                SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+                SqlCommand checkMail = new SqlCommand("Select * from [User] where(isActive='" + 1 + "'and  EmailId='" + email + "')", connection);
+                SqlCommand command = new SqlCommand("update [User] set IsActive = 0 where EmailId= '" + email + "'", connection);
+                connection.Open();
+                SqlDataAdapter da = new SqlDataAdapter(checkMail);
+                da.Fill(user);
+                int i = 0;
+                if (user.Rows.Count > 0)
+                {
+                    i = command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+                if (i > 0)
+                {
+                    return new Response()
+                    {
+                        statusCode = System.Net.HttpStatusCode.OK,
+                        statusMessage = "User deleted Sucessfully"
+                    };
+                }
+                return new Response()
+                {
+                    statusCode = System.Net.HttpStatusCode.BadRequest,
+                    statusMessage = "User doesnt Exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response()
+                {
+                    statusCode = System.Net.HttpStatusCode.BadRequest,
+                    statusMessage = string.Format("Deleting an user failed. Exception details are: {0}", ex.Message)
                 };
             }
 
