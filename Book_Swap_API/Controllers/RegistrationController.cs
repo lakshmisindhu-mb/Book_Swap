@@ -1,8 +1,6 @@
 ﻿using Book_Swap_API.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -16,7 +14,7 @@ namespace Book_Swap_API.Controllers
 
         public RegistrationController(IConfiguration configuration)
         {
-                _configuration = configuration;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -27,16 +25,16 @@ namespace Book_Swap_API.Controllers
             {
                 DataTable user = new DataTable();
                 SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
-                SqlCommand checkMail = new SqlCommand("Select * from [User] where(EmailId='"+registration.EmailId+"')",connection);
+                SqlCommand checkMail = new SqlCommand("Select * from [User] where(EmailId='" + registration.EmailId + "')", connection);
                 SqlCommand command = new SqlCommand("INSERT INTO [User](UserName,UserKey,EmailId,CreatedDate) Values('" + registration.UserName + "','" + registration.UserKey + "','" + registration.EmailId + "',GETDATE())", connection);
-                
+
                 connection.Open();
-                SqlDataAdapter da= new SqlDataAdapter(checkMail);
+                SqlDataAdapter da = new SqlDataAdapter(checkMail);
                 da.Fill(user);
-                int i=0;
-                if(user.Rows.Count==0)
+                int i = 0;
+                if (user.Rows.Count == 0)
                 {
-                     i = command.ExecuteNonQuery();
+                    i = command.ExecuteNonQuery();
 
                 }
                 connection.Close();
@@ -54,15 +52,15 @@ namespace Book_Swap_API.Controllers
                     statusMessage = "Email already Exist"
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new Response()
                 {
                     statusCode = System.Net.HttpStatusCode.BadRequest,
                     statusMessage = string.Format("Creating an user failed. Exception details are: {0}", ex.Message)
                 };
-            }          
-            
+            }
+
         }
 
         [HttpPost]
@@ -102,7 +100,7 @@ namespace Book_Swap_API.Controllers
                     statusMessage = string.Format("Login user failed. Exception details are: {0}", ex.Message)
                 };
             }
-            
+
         }
     }
 }
