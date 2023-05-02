@@ -149,5 +149,50 @@ namespace Book_Swap_API.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("Updateuser")]
+        public Response Updateuser(string email,string username, string userkey )
+        {
+            try
+            {
+                DataTable user = new DataTable();
+                SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+                SqlCommand checkMail = new SqlCommand("Select * from [User] where(isActive='" + 1 + "'and  EmailId='" + email + "')", connection);
+                SqlCommand command = new SqlCommand("update [User] set username= '" + username + "', userkey= '" + userkey + "'  where EmailId= '" + email + "'", connection);
+                connection.Open();
+                SqlDataAdapter da = new SqlDataAdapter(checkMail);
+                da.Fill(user);
+                int i = 0;
+                if (user.Rows.Count > 0)
+                {
+                    i = command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+                if (i > 0)
+                {
+                    return new Response()
+                    {
+                        statusCode = System.Net.HttpStatusCode.OK,
+                        statusMessage = "User updated Sucessfully"
+                    };
+                }
+                return new Response()
+                {
+                    statusCode = System.Net.HttpStatusCode.BadRequest,
+                    statusMessage = "User doesnt Exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response()
+                {
+                    statusCode = System.Net.HttpStatusCode.BadRequest,
+                    statusMessage = string.Format("Updating an user failed. Exception details are: {0}", ex.Message)
+                };
+            }
+
+        }
     }
 }
