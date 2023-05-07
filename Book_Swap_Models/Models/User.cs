@@ -16,4 +16,5 @@ public partial class User
     public DateTime CreatedDate { get; set; }
 
     public DateTime? UpdatedDate { get; set; }
+
 }
