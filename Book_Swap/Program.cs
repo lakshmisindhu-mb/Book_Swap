@@ -16,6 +16,7 @@ option.UseSqlServer(connectionString)
 
 builder.Services.AddScoped<IBookInterface, BookService>();
 builder.Services.AddScoped<IUserInterface, UserService>();
+builder.Services.AddScoped<IWishListService, WishListService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
