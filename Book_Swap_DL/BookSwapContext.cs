@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Swap_DL;
@@ -26,9 +27,11 @@ public partial class BookSwapContext : DbContext
 
     public virtual DbSet<WishListBook> WishListBooks { get; set; }
 
+    public virtual DbSet<UserRatings> UserRatings { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
          => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true ;");
-          // => optionsBuilder.UseSqlServer("Data Source=LAPTOP-BOEQN698\\SQLEXPRESS01;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true;");
+    // => optionsBuilder.UseSqlServer("Data Source=LAPTOP-BOEQN698\\SQLEXPRESS01;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true;");
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<BookGenreList>(entity =>
@@ -62,6 +65,7 @@ public partial class BookSwapContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UserKey).HasMaxLength(250);
             entity.Property(e => e.UserName).HasMaxLength(250);
+            entity.Property(e => e.AverageRating).HasMaxLength(5);
         });
 
         modelBuilder.Entity<UserBookTransaction>(entity =>
@@ -97,6 +101,15 @@ public partial class BookSwapContext : DbContext
             entity.Property(e => e.Publisher).HasMaxLength(50);
             entity.Property(e => e.UserName).HasMaxLength(150);
             entity.Property(e => e.WishlistedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<UserRatings>(entity =>
+        {
+            entity.ToTable("user_ratings");
+
+            entity.Property(e => e.BorrowerId).HasColumnName("Borrower_Id");
+            entity.Property(e => e.LenderId).HasColumnName("Lender_Id");
+            entity.Property(e => e.Rating).HasMaxLength(5);
         });
 
         OnModelCreatingPartial(modelBuilder);

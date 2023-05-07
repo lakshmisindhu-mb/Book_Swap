@@ -75,5 +75,21 @@ namespace Book_Swap_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("RateUser")]
+        public JsonResult RateUser(RateUserRequest request)
+        {
+            try
+            {
+                var response = userInterface.RateUser(request);
+               
+                return new JsonResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
     }
 }

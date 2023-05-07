@@ -17,4 +17,6 @@ public partial class User
 
     public DateTime? UpdatedDate { get; set; }
 
+    public double AverageRating { get; set; }
+
 }
