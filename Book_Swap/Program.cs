@@ -15,6 +15,7 @@ option.UseSqlServer(connectionString)
 );
 
 builder.Services.AddScoped<IBookInterface, BookService>();
+builder.Services.AddScoped<IEncrypt,EncriptService>();
 builder.Services.AddScoped<IUserInterface, UserService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
 

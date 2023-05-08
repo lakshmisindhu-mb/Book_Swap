@@ -10,6 +10,10 @@ namespace Book_Swap_Service.Interface
 {
     public interface IUserInterface
     {
+        bool CheckEmail(User emailCheck);
+        string Register(User register);
+        string Login(User login);
+        string ForgotPassword(User forgetPwd);
         public void UpdateUser(User userList);
         public void DeleteUser(int Id);
         public void SearchUser(int Id);
