@@ -22,7 +22,62 @@ namespace Book_Swap_API.Controllers
             crudStatus = new CrudStatus();
         }
 
-     
+        [HttpPost]
+        [Route("AddUser")]
+        public JsonResult Register(User reg)
+        {
+            try
+            {
+                bool result = userInterface.CheckEmail(reg);
+                if (result == false)
+                {
+                    string message = userInterface.Register(reg);
+                    crudStatus.Message = message;
+                }
+                else
+                {
+                    crudStatus.Message = "Email Already Exist";
+                }
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public JsonResult Login(User login)
+        {
+            try
+            {
+                string message = userInterface.Login(login);
+                crudStatus.Message = message;
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public JsonResult Forgot_password(User forgetPwd)
+        {
+            try
+            {
+                string message=userInterface.ForgotPassword(forgetPwd);
+                crudStatus.Message=message;
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
 
         [HttpPut]
         [Route("UpdateUser")]
