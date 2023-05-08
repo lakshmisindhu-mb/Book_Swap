@@ -31,7 +31,7 @@ public partial class BookSwapContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
          => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true ;");
-    // => optionsBuilder.UseSqlServer("Data Source=LAPTOP-BOEQN698\\SQLEXPRESS01;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true;");
+     //=> optionsBuilder.UseSqlServer("Data Source=RAJ\\SQLEXPRESS;Initial Catalog=Book_Swap;Integrated Security=True;TrustServerCertificate=true;");
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<BookGenreList>(entity =>
@@ -105,7 +105,7 @@ public partial class BookSwapContext : DbContext
 
         modelBuilder.Entity<UserRatings>(entity =>
         {
-            entity.ToTable("user_ratings");
+            entity.ToTable("User_Ratings");
 
             entity.Property(e => e.BorrowerId).HasColumnName("Borrower_Id");
             entity.Property(e => e.LenderId).HasColumnName("Lender_Id");

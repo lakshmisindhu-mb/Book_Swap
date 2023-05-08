@@ -104,11 +104,15 @@ namespace Book_Swap_Service.Service
 
             var rating = bookSwapContext.UserRatings.Where(x => x.BorrowerId == request.BorrowerId).Average(x => x.Rating);
 
-            User user = bookSwapContext.Users.Where(y => y.Id == request.BorrowerId).FirstOrDefault()!;
-            user.UpdatedDate = DateTime.Now;
-            user.AverageRating = rating;
-            bookSwapContext.Entry(user).State = EntityState.Modified;
-            bookSwapContext.SaveChanges();
+            var user = bookSwapContext.Users.Where(y => y.Id == request.BorrowerId).FirstOrDefault();
+            if(user != null)
+            {
+                user.UpdatedDate = DateTime.Now;
+                user.AverageRating = rating;
+                bookSwapContext.Entry(user).State = EntityState.Modified;
+                bookSwapContext.SaveChanges();
+            }
+           
         }
 
 
