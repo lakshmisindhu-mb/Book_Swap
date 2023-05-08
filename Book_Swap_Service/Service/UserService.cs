@@ -92,8 +92,11 @@ namespace Book_Swap_Service.Service
             try
             {
                 User user = bookSwapContext.Users.Where(y => y.Id == userList.Id).FirstOrDefault()!;
-                user.UpdatedDate = userList.UpdatedDate;
-                user.UserKey = userList.UserKey;
+                string encryptPassword = _encrypt.EncodePasswordToBase64(user.UserKey!);
+                user.UserName = userList.UserName;
+                user.UpdatedDate = DateTime.Now;
+                user.UserKey = encryptPassword;
+                user.IsActive = true;
                 bookSwapContext.Entry(user).State = EntityState.Modified;
                 bookSwapContext.SaveChanges();
             }
@@ -108,7 +111,8 @@ namespace Book_Swap_Service.Service
             try
             {
                 User user = bookSwapContext.Users.Where(y => y.Id == Id).FirstOrDefault()!;
-                bookSwapContext.Entry(user).State = EntityState.Deleted;
+                user.IsActive = false;
+                bookSwapContext.Entry(user).State = EntityState.Modified;
                 bookSwapContext.SaveChanges();
             }
             catch (Exception ex)
