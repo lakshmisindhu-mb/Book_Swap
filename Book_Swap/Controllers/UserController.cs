@@ -116,17 +116,18 @@ namespace Book_Swap_API.Controllers
 
         [HttpGet]
         [Route("SearchUser")]
-        public JsonResult SearchUser(int Id)
+        public User SearchUser(string  username, string emailid)
         {
+            User userDetails = new();
             try
             {
-                userInterface.SearchUser(Id);
+                userDetails = userInterface.SearchUser(username, emailid);
                 crudStatus.Message = "User Searched Successfully";
-                return new JsonResult(crudStatus);
+                return userDetails;
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message);
+                return userDetails;             
             }
         }
 

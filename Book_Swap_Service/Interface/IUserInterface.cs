@@ -16,7 +16,7 @@ namespace Book_Swap_Service.Interface
         string ForgotPassword(User forgetPwd);
         public void UpdateUser(User userList);
         public void DeleteUser(int Id);
-        public void SearchUser(int Id);
+        public User SearchUser(string username, string emailid);
         RateUserResponse RateUser(RateUserRequest request);
 
     }

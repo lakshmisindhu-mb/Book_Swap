@@ -121,18 +121,25 @@ namespace Book_Swap_Service.Service
             }
         }
 
-        public void SearchUser(int Id)
+        public User SearchUser(string username, string email )
         {
-            //BookList book = bookSwapContext.BookLists.Where(y => y.Id == bookList.Id).FirstOrDefault()!; 
-            //book.BookName = bookList.BookName;
-            //book.GenreId = bookList.GenreId;    
-            //book.Author = bookList.Author;
-            //book.Publisher = bookList.Publisher;
-            //book.Edition = bookList.Edition;
-            //book.ReleaseDate = bookList.ReleaseDate;
-            //book.ModifiedDate = DateTime.Now;
-            //bookSwapContext.Entry(book).State = EntityState.Modified;
-            //bookSwapContext.SaveChanges();
+            User user = new();
+
+            if (email == null && username != null)
+            {
+                user = bookSwapContext.Users.Where(y => y.UserName == username).FirstOrDefault()!;
+            }
+            else if(email != null && username == null)
+            {
+                 user = bookSwapContext.Users.Where(y => y.EmailId == email).FirstOrDefault()!;
+            }
+            else if (email != null && username != null)
+            {
+                 user = bookSwapContext.Users.Where(y => y.EmailId == email && y.UserName == username).FirstOrDefault()!;
+            }
+
+            return user;
+
         }
 
         public RateUserResponse RateUser(RateUserRequest request)
