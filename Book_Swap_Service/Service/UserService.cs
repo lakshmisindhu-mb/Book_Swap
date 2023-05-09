@@ -102,7 +102,7 @@ namespace Book_Swap_Service.Service
             }
             catch (Exception ex)
             {
-
+                throw;
             }
         }
 
@@ -117,29 +117,35 @@ namespace Book_Swap_Service.Service
             }
             catch (Exception ex)
             {
-
+                throw;
             }
         }
 
-        public User SearchUser(string username, string email )
+        public async Task<User> SearchUser(string username, string email )
         {
             User user = new();
-
-            if (email == null && username != null)
+            try
             {
-                user = bookSwapContext.Users.Where(y => y.UserName == username).FirstOrDefault()!;
-            }
-            else if(email != null && username == null)
-            {
-                 user = bookSwapContext.Users.Where(y => y.EmailId == email).FirstOrDefault()!;
-            }
-            else if (email != null && username != null)
-            {
-                 user = bookSwapContext.Users.Where(y => y.EmailId == email && y.UserName == username).FirstOrDefault()!;
-            }
+                if (email == null && username != null)
+                {
+                    user = bookSwapContext.Users.Where(y => y.UserName == username).FirstOrDefault()!;
+                }
+                else if (email != null && username == null)
+                {
+                    user = bookSwapContext.Users.Where(y => y.EmailId == email).FirstOrDefault()!;
+                }
+                else if (email != null && username != null)
+                {
+                    user = bookSwapContext.Users.Where(y => y.EmailId == email && y.UserName == username).FirstOrDefault()!;
+                }
 
-            return user;
+                return user;
+            }
+            catch(Exception ex)
+            {
+                throw ;
 
+            }
         }
 
         public RateUserResponse RateUser(RateUserRequest request)
