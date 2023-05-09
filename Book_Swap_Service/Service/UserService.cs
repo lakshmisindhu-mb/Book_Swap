@@ -50,7 +50,7 @@ namespace Book_Swap_Service.Service
             try
             {
                 var checkpasword=_encrypt.EncodePasswordToBase64(login.UserKey!);
-                var checkcredentials=bookSwapContext.Users.Where(x => x.EmailId == login.EmailId && x.UserKey==checkpasword).FirstOrDefault();
+                var checkcredentials=bookSwapContext.Users.Where(x => x.EmailId == login.EmailId && x.UserName==login.UserName && x.UserKey==checkpasword).FirstOrDefault();
                 if (checkcredentials != null)
                 {
                     return "User Login SuccessFully";
@@ -121,7 +121,7 @@ namespace Book_Swap_Service.Service
             }
         }
 
-        public async Task<User> SearchUser(string username, string email )
+        public User SearchUser(string username, string email )
         {
             User user = new();
             try
