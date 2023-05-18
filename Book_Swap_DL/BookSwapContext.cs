@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Swap_DL;
@@ -25,6 +26,8 @@ public partial class BookSwapContext : DbContext
     public virtual DbSet<UserBookTransaction> UserBookTransactions { get; set; }
 
     public virtual DbSet<WishListBook> WishListBooks { get; set; }
+
+    public virtual DbSet<UserRatings> UserRatings { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -63,6 +66,7 @@ public partial class BookSwapContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UserKey).HasMaxLength(250);
             entity.Property(e => e.UserName).HasMaxLength(250);
+            entity.Property(e => e.AverageRating).HasMaxLength(5);
         });
 
         modelBuilder.Entity<UserBookTransaction>(entity =>
@@ -101,6 +105,14 @@ public partial class BookSwapContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+
+        modelBuilder.Entity<UserRatings>(entity =>
+        {
+            entity.ToTable("User_Ratings");
+            entity.Property(e => e.BorrowerId).HasColumnName("Borrower_Id");
+            entity.Property(e => e.LenderId).HasColumnName("Lender_Id");
+            entity.Property(e => e.Rating).HasMaxLength(5);
+        });
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
