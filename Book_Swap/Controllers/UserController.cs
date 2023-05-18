@@ -131,7 +131,7 @@ namespace Book_Swap_API.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("RateUser")]
         public JsonResult RateUser(RateUserRequest request)
         {

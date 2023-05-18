@@ -150,54 +150,54 @@ namespace Book_Swap_Service.Service
 
         public RateUserResponse RateUser(RateUserRequest request)
         {
-            //if (request.FromUserId > 0 && request.BorrowerId > 0 && request.Rating > 0)
-            //{
-            //    var existingRating = bookSwapContext.UserRatings.Where(x => x.BorrowerId == request.BorrowerId && x.LenderId == request.FromUserId).FirstOrDefault();
-            //    if (existingRating != null && existingRating.BorrowerId > 0 && existingRating.LenderId > 0)
-            //    {
-            //        bookSwapContext.Entry(existingRating).State = EntityState.Deleted;
-            //        bookSwapContext.SaveChanges();
+            if (request.FromUserId > 0 && request.BorrowerId > 0 && request.Rating > 0)
+            {
+                var existingRating = bookSwapContext.UserRatings.Where(x => x.BorrowerId == request.BorrowerId && x.LenderId == request.FromUserId).FirstOrDefault();
+                if (existingRating != null && existingRating.BorrowerId > 0 && existingRating.LenderId > 0)
+                {
+                    bookSwapContext.Entry(existingRating).State = EntityState.Deleted;
+                    bookSwapContext.SaveChanges();
 
-            //        AddRatingDB(request);
-            //    }
-            //    else
-            //    {
-            //        var ifUserBorrowed = bookSwapContext.UserBookTransactions.Where(x => x.LenderId == request.FromUserId && x.BorrowerId == request.BorrowerId && x.ReturnDate < DateTime.Now).Any();
-            //        if (ifUserBorrowed)
-            //        {
-            //            AddRatingDB(request);
-            //        }
-            //        else
-            //        {
-            //            return new RateUserResponse { Message = "transactions not found with given values", StatusCode = System.Net.HttpStatusCode.NotFound };
-            //        }
-            //    }
-                
-            //}
-            //else
-            //{
-            //    return new RateUserResponse { Message = "Incorrect Values passed", StatusCode = System.Net.HttpStatusCode.NotAcceptable };
-            //}
+                    AddRatingDB(request);
+                }
+                else
+                {
+                    var ifUserBorrowed = bookSwapContext.UserBookTransactions.Where(x => x.LenderId == request.FromUserId && x.BorrowerId == request.BorrowerId && x.ReturnDate < DateTime.Now).Any();
+                    if (ifUserBorrowed)
+                    {
+                        AddRatingDB(request);
+                    }
+                    else
+                    {
+                        return new RateUserResponse { Message = "transactions not found with given values", StatusCode = System.Net.HttpStatusCode.NotFound };
+                    }
+                }
+
+            }
+            else
+            {
+                return new RateUserResponse { Message = "Incorrect Values passed", StatusCode = System.Net.HttpStatusCode.NotAcceptable };
+            }
             return new RateUserResponse { Message = "success", StatusCode = System.Net.HttpStatusCode.OK };
         }
 
         private void AddRatingDB(RateUserRequest request)
         {
-            //var ratings = new UserRatings { LenderId = request.FromUserId, BorrowerId = request.BorrowerId, Rating = request.Rating };
-            //bookSwapContext.UserRatings.Add(ratings);
-            //bookSwapContext.SaveChanges();
+            var ratings = new UserRatings { LenderId = request.FromUserId, BorrowerId = request.BorrowerId, Rating = request.Rating };
+            bookSwapContext.UserRatings.Add(ratings);
+            bookSwapContext.SaveChanges();
 
-            //var rating = bookSwapContext.UserRatings.Where(x => x.BorrowerId == request.BorrowerId).Average(x => x.Rating);
+            var rating = bookSwapContext.UserRatings.Where(x => x.BorrowerId == request.BorrowerId).Average(x => x.Rating);
 
-            //var user = bookSwapContext.Users.Where(y => y.Id == request.BorrowerId).FirstOrDefault();
-            //if(user != null)
-            //{
-            //    user.UpdatedDate = DateTime.Now;
-            //    user.AverageRating = rating;
-            //    bookSwapContext.Entry(user).State = EntityState.Modified;
-            //    bookSwapContext.SaveChanges();
-            //}
-           
+            var user = bookSwapContext.Users.Where(y => y.Id == request.BorrowerId).FirstOrDefault();
+            if (user != null)
+            {
+                user.UpdatedDate = DateTime.Now;
+                user.AverageRating = Math.Round(rating, 1); ;
+                bookSwapContext.Entry(user).State = EntityState.Modified;
+                bookSwapContext.SaveChanges();
+            }
+
         }
 
 
