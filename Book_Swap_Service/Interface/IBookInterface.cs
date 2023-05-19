@@ -11,5 +11,11 @@ namespace Book_Swap_Service.Interface
     {
         public void AddBook(BookList bookList);
         public void UpdateBook(BookList bookList);
+
+        public void AddUserBookTransaction(UserBookTransaction transaction);
+
+        public void UpdateUserBookTransaction(UserBookTransaction transaction);
+
+        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
     }
 }

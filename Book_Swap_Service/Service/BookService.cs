@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Book_Swap_Service.Service
 {
-    public class BookService:IBookInterface
+    public class BookService : IBookInterface
     {
         private readonly BookSwapContext bookSwapContext;
-        public BookService (BookSwapContext bookSwapContext)
+        public BookService(BookSwapContext bookSwapContext)
         {
             this.bookSwapContext = bookSwapContext;
         }
@@ -26,9 +26,9 @@ namespace Book_Swap_Service.Service
         }
         public void UpdateBook(BookList bookList)
         {
-            BookList book = bookSwapContext.BookLists.Where(y => y.Id == bookList.Id).FirstOrDefault()!; 
+            BookList book = bookSwapContext.BookLists.Where(y => y.Id == bookList.Id).FirstOrDefault()!;
             book.BookName = bookList.BookName;
-            book.GenreId = bookList.GenreId;    
+            book.GenreId = bookList.GenreId;
             book.Author = bookList.Author;
             book.Publisher = bookList.Publisher;
             book.Edition = bookList.Edition;
@@ -38,6 +38,64 @@ namespace Book_Swap_Service.Service
             bookSwapContext.SaveChanges();
         }
 
+        public void AddUserBookTransaction(UserBookTransaction transaction)
+        {
+            transaction.BorrowDate = DateTime.Now;
+            transaction.ReturnDate = null;
+            transaction.Review = "";
+            bookSwapContext.UserBookTransactions.Add(transaction);
+            bookSwapContext.SaveChanges();
+        }
+
+        public void UpdateUserBookTransaction(UserBookTransaction transaction)
+        {
+            UserBookTransaction trans = bookSwapContext.UserBookTransactions.Where(x => x.Id == transaction.Id).FirstOrDefault()!;
+
+            trans.Review = transaction.Review;
+
+            if (transaction.ReturnDate != null && transaction.ReturnDate >= trans.BorrowDate)
+            {
+                trans.ReturnDate = transaction.ReturnDate;
+            }
+            else
+            {
+                trans.ReturnDate = DateTime.Now;
+            }
+
+            bookSwapContext.Entry(trans).State = EntityState.Modified;
+            bookSwapContext.SaveChanges();
+        }
+
+        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
+        {
+            List<UserBookTransaction> transactions = new();
+            try
+            {
+                if (borrowerId == 0 && lenderId > 0)
+                {
+                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.LenderId == lenderId).ToList();
+                }
+                else if (borrowerId > 0 && lenderId == 0)
+                {
+                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.BorrowerId == borrowerId).ToList();
+                }
+                else if (borrowerId > 0 && lenderId > 0)
+                {
+                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.BorrowerId == borrowerId && y.LenderId == lenderId).ToList();
+                }
+                else
+                {
+                    transactions = bookSwapContext.UserBookTransactions.ToList();
+                }
+
+                return transactions;
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+        }
 
     }
 }
