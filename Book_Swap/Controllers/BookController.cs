@@ -4,6 +4,7 @@ using Book_Swap_Models.Models;
 using Book_Swap_Service.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Book_Swap_API.Controllers
 {
@@ -32,7 +33,7 @@ namespace Book_Swap_API.Controllers
                 crudStatus.Message = "Book Added Succesfully";
                 return new JsonResult(crudStatus);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
@@ -48,10 +49,62 @@ namespace Book_Swap_API.Controllers
                 crudStatus.Message = "Book Updated Successfully";
                 return new JsonResult(crudStatus);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        [Route("AddUserBookTransaction")]
+        public JsonResult AddUserBookTransaction(UserBookTransaction transaction)
+        {
+            try
+            {
+                bookInterface.AddUserBookTransaction(transaction);
+                crudStatus.Message = "Transaction Added Succesfully";
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateUserBookTransaction")]
+        public JsonResult UpdateUserBookTransaction(UserBookTransaction transaction)
+        {
+            try
+            {
+                bookInterface.UpdateUserBookTransaction(transaction);
+                crudStatus.Message = "Transaction Updated Successfully";
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetUserBookTransaction")]
+        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
+        {
+            List<UserBookTransaction> transactions = new();
+            try
+            {
+                transactions = bookInterface.GetUserBookTransaction(borrowerId, lenderId);
+                crudStatus.Message = "transactions fetched Successfully";
+                return transactions;
+            }
+            catch (Exception ex)
+            {
+                return transactions;
+            }
+        }
+
+
     }
 }
