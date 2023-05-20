@@ -55,17 +55,15 @@ namespace Book_Swap_UI_Design.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                return View(ex.Message);
             }
         }
 
         //
-
         // GET: /Employee/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-
             return View();
         }
 

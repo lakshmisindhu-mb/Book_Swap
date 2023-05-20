@@ -152,7 +152,5 @@ namespace Book_Swap_API.Controllers
                 return transactions;
             }
         }
-
-
     }
 }

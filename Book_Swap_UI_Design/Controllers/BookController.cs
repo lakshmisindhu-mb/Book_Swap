@@ -57,7 +57,7 @@ namespace Book_Swap_UI_Design.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                return View(ex.Message);
             }
         }
 
@@ -67,7 +67,6 @@ namespace Book_Swap_UI_Design.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-           
              return View(); 
         }
 
@@ -85,7 +84,6 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         //
-
         // GET: /Employee/Details/5
 
         public ActionResult Details(int id = 0)
