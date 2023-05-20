@@ -12,6 +12,7 @@ namespace Book_Swap_UI_Design.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            client = new HttpClient();
         }
 
         public IActionResult Index()

@@ -62,7 +62,6 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         //
-
         // GET: /Employee/Edit/5
 
         public ActionResult Edit(int id = 0)
@@ -114,6 +113,75 @@ namespace Book_Swap_UI_Design.Controllers
                 return View();
             }
             return View(getEmployee);
+        }
+
+        [HttpGet]
+        public IActionResult AddUserBookTransaction()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddUserBookTransaction(UserBookTransaction UserBookTransaction)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var getEmployee = client.PostAsJsonAsync("api/AddUserBookTransaction", UserBookTransaction).Result;
+                    if (getEmployee.IsSuccessStatusCode)
+                    {
+                        return View();
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
+        }
+
+        //
+        // GET: /Employee/Edit/5
+
+        public ActionResult UpdateUserBookTransaction(int id = 0)
+        {
+            return View();
+        }
+
+        //
+        // POST: /Employee/Edit/5
+        [HttpPost]
+        public ActionResult UpdateUserBookTransaction(UserBookTransaction UserBookTransaction)
+        {
+            var getEmployee = client.PostAsJsonAsync("api/AddBook", UserBookTransaction).Result;
+            if (getEmployee.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            return View(getEmployee);
+        }
+
+        public IActionResult GetUserBookTransaction()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string apiUrl = "https://localhost:7177/api/Book";
+                    var bookList = client.GetAsync(apiUrl + string.Format("/GetUserBookTransaction")).Result;
+                    if (bookList.IsSuccessStatusCode)
+                    {
+                        return View(bookList);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
         }
         protected override void Dispose(bool disposing)
         {

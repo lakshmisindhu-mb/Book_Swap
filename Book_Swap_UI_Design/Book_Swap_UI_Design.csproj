@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Book_Swap\Book_Swap_API.csproj" />
     <ProjectReference Include="..\Book_Swap_Models\Book_Swap_Models.csproj" />
   </ItemGroup>
 
