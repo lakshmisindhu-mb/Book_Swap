@@ -149,6 +149,7 @@ namespace Book_Swap_API.Controllers
             }
             catch (Exception ex)
             {
+                string errorMessage = ex.Message;
                 return transactions;
             }
         }
