@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Book_Swap_Models\Book_Swap_Models.csproj" />
   </ItemGroup>
 
