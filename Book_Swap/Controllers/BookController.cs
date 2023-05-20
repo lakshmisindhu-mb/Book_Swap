@@ -23,6 +23,22 @@ namespace Book_Swap_API.Controllers
             crudStatus = new CrudStatus();
         }
 
+        [HttpGet]
+        [Route("GetBookList")]
+
+        public JsonResult GetBookList()
+        {
+            try
+            {
+                List<BookList> list = bookInterface.GetBookList();
+                return new JsonResult(list);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("AddBook")]
         public JsonResult AddBook(BookList bookList)
@@ -47,6 +63,38 @@ namespace Book_Swap_API.Controllers
             {
                 bookInterface.UpdateBook(booklist);
                 crudStatus.Message = "Book Updated Successfully";
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteBook")]
+        public JsonResult DeleteBook(BookList booklist)
+        {
+            try
+            {
+                bookInterface.DeleteBook(booklist);
+                crudStatus.Message = "Book Deleted Successfully";
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("GetBookDetails")]
+        public JsonResult GetBookDetails(int booklist)
+        {
+            try
+            {
+                bookInterface.GetBookDetails(booklist);
+                crudStatus.Message = "Book Details";
                 return new JsonResult(crudStatus);
             }
             catch (Exception ex)
