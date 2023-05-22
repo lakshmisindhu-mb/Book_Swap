@@ -17,6 +17,11 @@ namespace Book_Swap_Service.Service
         {
             this.bookSwapContext = bookSwapContext;
         }
+
+        public List<BookList> GetBookList()
+        {
+            return bookSwapContext.BookLists.ToList();
+        }
         public void AddBook(BookList bookList)
         {
             bookList.CreatedDate = DateTime.Now;
@@ -36,6 +41,16 @@ namespace Book_Swap_Service.Service
             book.ModifiedDate = DateTime.Now;
             bookSwapContext.Entry(book).State = EntityState.Modified;
             bookSwapContext.SaveChanges();
+        }
+
+        public void DeleteBook(BookList bookID)
+        {
+            bookSwapContext.BookLists.Remove(bookID);
+        }
+
+        public BookList GetBookDetails(int bookID)
+        {
+            return bookSwapContext.BookLists.Find(bookID);
         }
 
         public void AddUserBookTransaction(UserBookTransaction transaction)
