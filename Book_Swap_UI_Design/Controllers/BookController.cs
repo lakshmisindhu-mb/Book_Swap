@@ -1,6 +1,8 @@
-﻿using Book_Swap_Models;
+﻿using Azure;
+using Book_Swap_Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Book_Swap_UI_Design.Controllers
 {
@@ -8,22 +10,28 @@ namespace Book_Swap_UI_Design.Controllers
     {
 
         private readonly HttpClient client;
-
+        private readonly string apiUrl;
+        private List<BookList> bookList1;
+        private BookList bookDetails;
         public BookController()
         {
             client = new HttpClient();
+            apiUrl = "http://localhost:81/api/Book";
+            bookList1 = new List<BookList>();
+            bookDetails = new BookList();
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
-            {
+            {                
                 if (ModelState.IsValid)
-                {
-                    string apiUrl = "https://localhost:7177/api/Book";
+                {                    
                     var bookList = client.GetAsync(apiUrl+ string.Format("/GetBookLIst")).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
-                        return View(bookList);
+                        string apiResponse = await bookList.Content.ReadAsStringAsync();
+                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse);
+                        return View(bookList1);
                     }
                 }
                 return View();
@@ -47,7 +55,7 @@ namespace Book_Swap_UI_Design.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var getEmployee = client.PostAsJsonAsync("api/AddBook", bookList).Result;
+                    var getEmployee = client.PostAsJsonAsync(apiUrl+"api/AddBook", bookList).Result;
                     if (getEmployee.IsSuccessStatusCode)
                     {
                         return View();
@@ -60,67 +68,62 @@ namespace Book_Swap_UI_Design.Controllers
                 return View(ex.Message);
             }
         }
-
-        //
-        // GET: /Employee/Edit/5
-
-        public ActionResult Edit(int id = 0)
+        public async Task<ActionResult> Edit(int id = 0)
         {
-             return View(); 
+            var bookList = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist="+id)).Result;
+            if (bookList.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookList.Content.ReadAsStringAsync();
+                bookDetails = JsonConvert.DeserializeObject<BookList>(apiResponse);
+                return View(bookDetails);
+            }
+            return View(bookDetails);
         }
-
-        //
-        // POST: /Employee/Edit/5
         [HttpPost]
-        public ActionResult Edit(BookList bookLIst)
+        public ActionResult Edit(BookList bookList)
         {
-            var getEmployee = client.PostAsJsonAsync("api/AddBook", bookLIst).Result;
+            var getEmployee = client.PutAsJsonAsync(apiUrl+"/UpdateBook", bookList).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("Index");
             }
-            return View(getEmployee);
+            return RedirectToAction("Index");
         }
-
-        //
-        // GET: /Employee/Details/5
-
         public ActionResult Details(int id = 0)
         {
-            var getEmployee = client.PostAsJsonAsync("api/AddBook", id).Result;
+            var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetBookDetails", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
                 return View();
             }
             return View(getEmployee);
         }
-
-        //
-        // GET: /Employee/Delete/5
-        public ActionResult Delete(int id = 0)
+        public async Task<ActionResult> Delete(int id = 0)
         {
-            return View();
+            var bookList = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result; 
+            if (bookList.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookList.Content.ReadAsStringAsync();
+                bookDetails = JsonConvert.DeserializeObject<BookList>(apiResponse);
+                return View(bookDetails);
+            }
+            return View(bookDetails);
         }
-
-        //
-        // POST: /Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var getEmployee = client.PostAsJsonAsync("api/AddBook", id).Result;
+            var getEmployee = client.PostAsJsonAsync(apiUrl + "/DeleteBook", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("Index");
             }
-            return View(getEmployee);
+            return RedirectToAction("Index");
         }
-
         [HttpGet]
         public IActionResult AddUserBookTransaction()
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult AddUserBookTransaction(UserBookTransaction UserBookTransaction)
         {
@@ -128,7 +131,7 @@ namespace Book_Swap_UI_Design.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var getEmployee = client.PostAsJsonAsync("api/AddUserBookTransaction", UserBookTransaction).Result;
+                    var getEmployee = client.PostAsJsonAsync("/AddUserBookTransaction", UserBookTransaction).Result;
                     if (getEmployee.IsSuccessStatusCode)
                     {
                         return View();
@@ -141,35 +144,26 @@ namespace Book_Swap_UI_Design.Controllers
                 return View(ex.Message);
             }
         }
-
-        //
-        // GET: /Employee/Edit/5
-
         public ActionResult UpdateUserBookTransaction(int id = 0)
         {
             return View();
         }
-
-        //
-        // POST: /Employee/Edit/5
         [HttpPost]
         public ActionResult UpdateUserBookTransaction(UserBookTransaction UserBookTransaction)
         {
-            var getEmployee = client.PostAsJsonAsync("api/AddBook", UserBookTransaction).Result;
+            var getEmployee = client.PostAsJsonAsync("/UpdateUserBookTransaction", UserBookTransaction).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
                 return View();
             }
             return View(getEmployee);
         }
-
         public IActionResult GetUserBookTransaction()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    string apiUrl = "https://localhost:7177/api/Book";
                     var bookList = client.GetAsync(apiUrl + string.Format("/GetUserBookTransaction")).Result;
                     if (bookList.IsSuccessStatusCode)
                     {

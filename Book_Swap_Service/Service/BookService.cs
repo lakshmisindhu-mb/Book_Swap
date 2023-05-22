@@ -48,9 +48,9 @@ namespace Book_Swap_Service.Service
             bookSwapContext.BookLists.Remove(bookID);
         }
 
-        public void GetBookDetails(int bookID)
+        public BookList GetBookDetails(int bookID)
         {
-            bookSwapContext.BookLists.Find(bookID);
+            return bookSwapContext.BookLists.Find(bookID);
         }
 
         public void AddUserBookTransaction(UserBookTransaction transaction)

@@ -58,17 +58,10 @@ namespace Book_Swap_UI_Design.Controllers
                 return View(ex.Message);
             }
         }
-
-        //
-        // GET: /Employee/Edit/5
-
         public ActionResult Edit(int id = 0)
         {
             return View();
         }
-
-        //
-        // POST: /Employee/Edit/5
         [HttpPost]
         public ActionResult Edit(BookList bookLIst)
         {
@@ -79,11 +72,6 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return View(getEmployee);
         }
-
-        //
-
-        // GET: /Employee/Details/5
-
         public ActionResult Details(int id = 0)
         {
             var getEmployee = client.PostAsJsonAsync("api/AddBook", id).Result;
@@ -93,16 +81,10 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return View(getEmployee);
         }
-
-        //
-        // GET: /Employee/Delete/5
         public ActionResult Delete(int id = 0)
         {
             return View();
         }
-
-        //
-        // POST: /Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

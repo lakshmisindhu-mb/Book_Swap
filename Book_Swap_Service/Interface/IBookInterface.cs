@@ -13,7 +13,7 @@ namespace Book_Swap_Service.Interface
         public void AddBook(BookList bookList);
         public void UpdateBook(BookList bookList);
         public void DeleteBook(BookList bookID);
-        public void GetBookDetails(int bookID);
+        public BookList GetBookDetails(int bookID);
         public void AddUserBookTransaction(UserBookTransaction transaction);
 
         public void UpdateUserBookTransaction(UserBookTransaction transaction);

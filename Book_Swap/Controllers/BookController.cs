@@ -15,12 +15,14 @@ namespace Book_Swap_API.Controllers
         private readonly BookSwapContext bookSwapContext;
         private readonly IBookInterface bookInterface;
         private readonly CrudStatus crudStatus;
+        private BookList bookDetail;
 
         public BookController(BookSwapContext bookSwapContext, IBookInterface bookInterface)
         {
             this.bookSwapContext = bookSwapContext;
             this.bookInterface = bookInterface;
             crudStatus = new CrudStatus();
+            bookDetail = new BookList();
         }
 
         [HttpGet]
@@ -87,20 +89,21 @@ namespace Book_Swap_API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("GetBookDetails")]
-        public JsonResult GetBookDetails(int booklist)
+        public BookList GetBookDetails(int booklist)
         {
             try
             {
-                bookInterface.GetBookDetails(booklist);
+                bookDetail = bookInterface.GetBookDetails(booklist);
                 crudStatus.Message = "Book Details";
-                return new JsonResult(crudStatus);
+                
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message);
+                
             }
+            return bookDetail;
         }
 
 
