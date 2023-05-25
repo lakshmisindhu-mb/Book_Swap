@@ -22,6 +22,10 @@ namespace Book_Swap_Service.Service
         {
             return bookSwapContext.BookLists.ToList();
         }
+        public List<BookList> SearchBook(string searchText)
+        {
+            return bookSwapContext.BookLists.Where(x=> x.BookName.Contains(searchText)).ToList();
+        }
         public void AddBook(BookList bookList)
         {
             bookList.CreatedDate = DateTime.Now;

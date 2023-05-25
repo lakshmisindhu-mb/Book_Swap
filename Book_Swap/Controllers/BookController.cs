@@ -41,6 +41,22 @@ namespace Book_Swap_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("SearchBook")]
+
+        public JsonResult SearchBook(string searchText)
+        {
+            try
+            {
+                List<BookList> list = bookInterface.SearchBook(searchText);
+                return new JsonResult(list);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("AddBook")]
         public JsonResult AddBook(BookList bookList)
