@@ -3,6 +3,7 @@ using Book_Swap_Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace Book_Swap_UI_Design.Controllers
 {
@@ -165,6 +166,31 @@ namespace Book_Swap_UI_Design.Controllers
                 if (ModelState.IsValid)
                 {
                     var bookList = client.GetAsync(apiUrl + string.Format("/GetUserBookTransaction")).Result;
+                    if (bookList.IsSuccessStatusCode)
+                    {
+                        return View(bookList);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
+        }
+
+        public IActionResult SearchBook(IFormCollection form)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string searchText = form["searchText"];
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        searchText = "";
+                    }
+                    var bookList = client.GetAsync(apiUrl + string.Format("/SearchBook?searchText=" + searchText)).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
                         return View(bookList);

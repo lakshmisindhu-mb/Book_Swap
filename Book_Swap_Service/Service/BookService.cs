@@ -24,7 +24,15 @@ namespace Book_Swap_Service.Service
         }
         public List<BookList> SearchBook(string searchText)
         {
-            return bookSwapContext.BookLists.Where(x=> x.BookName.Contains(searchText)).ToList();
+            if(string.IsNullOrEmpty(searchText))
+            {
+                return bookSwapContext.BookLists.ToList();
+            }
+            else
+            {
+                return bookSwapContext.BookLists.Where(x => x.BookName.Contains(searchText)).ToList();
+            }
+            
         }
         public void AddBook(BookList bookList)
         {
