@@ -114,7 +114,7 @@ namespace Book_Swap_API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("DeleteUser")]
         public JsonResult DeleteUser(int Id)
         {

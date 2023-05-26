@@ -68,7 +68,7 @@ namespace Book_Swap_UI_Design.Controllers
         }
         public async Task<ActionResult> Edit(int id = 0)
         {
-            var bookList = client.GetAsync(apiUrl + string.Format("/GetBookDetails?user=" + id)).Result;
+            var bookList = client.GetAsync(apiUrl + string.Format("/GetUserDetails?user=" + id)).Result;
             if (bookList.IsSuccessStatusCode)
             {
                 string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -92,13 +92,13 @@ namespace Book_Swap_UI_Design.Controllers
             var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetUserDetails", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
-                return View();
+                return View(getEmployee);
             }
             return View(getEmployee);
         }
         public async Task<ActionResult> Delete(int id = 0)
         {
-            var userList = client.GetAsync(apiUrl + string.Format("/GetUserDetails?user=" + id)).Result;
+            var userList = client.GetAsync(apiUrl + string.Format("/DeleteUser" + id)).Result;
             if (userList.IsSuccessStatusCode)
             {
                 string apiResponse = await userList.Content.ReadAsStringAsync();

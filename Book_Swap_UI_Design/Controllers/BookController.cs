@@ -43,6 +43,29 @@ namespace Book_Swap_UI_Design.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SearchBook(string searchString, bool notUsed)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var bookList = client.PostAsJsonAsync(apiUrl + string.Format("/SearchBook"), searchString).Result;
+                    if (bookList.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await bookList.Content.ReadAsStringAsync();
+                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse);
+                        return View(bookList1);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult AddBook()
         {
@@ -95,7 +118,7 @@ namespace Book_Swap_UI_Design.Controllers
             var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetBookDetails", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
-                return View();
+                return View(getEmployee);
             }
             return View(getEmployee);
         }
