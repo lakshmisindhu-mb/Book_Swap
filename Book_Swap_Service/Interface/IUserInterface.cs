@@ -10,7 +10,8 @@ namespace Book_Swap_Service.Interface
 {
     public interface IUserInterface
     {
-        bool CheckEmail(User emailCheck);
+        public List<User> GetUserList();
+        bool CheckEmail(User emailCheck); 
         string Register(User register);
         string Login(User login);
         string ForgotPassword(User forgetPwd);
@@ -18,6 +19,8 @@ namespace Book_Swap_Service.Interface
         public void DeleteUser(int Id);
         public User SearchUser(string username, string emailid);
         RateUserResponse RateUser(RateUserRequest request);
+
+        public User GetUserDetails(int bookID);
 
     }
 }
