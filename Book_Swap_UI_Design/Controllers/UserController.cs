@@ -87,14 +87,16 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Details(int id = 0)
+        public async Task<ActionResult> Details(int id = 0)
         {
-            var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetUserDetails", id).Result;
-            if (getEmployee.IsSuccessStatusCode)
+            var userdetailView = client.PostAsJsonAsync(apiUrl + "/GetUserDetails", id).Result;
+            if (userdetailView.IsSuccessStatusCode)
             {
-                return View(getEmployee);
+                string apiResponse = await userdetailView.Content.ReadAsStringAsync();
+                userDetails = JsonConvert.DeserializeObject<User>(apiResponse);
+                return View(userDetails);
             }
-            return View(getEmployee);
+            return View(userDetails);
         }
         public async Task<ActionResult> Delete(int id = 0)
         {

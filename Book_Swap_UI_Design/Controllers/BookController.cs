@@ -106,21 +106,23 @@ namespace Book_Swap_UI_Design.Controllers
         [HttpPost]
         public ActionResult Edit(BookList bookList)
         {
-            var getEmployee = client.PutAsJsonAsync(apiUrl+"/UpdateBook", bookList).Result;
-            if (getEmployee.IsSuccessStatusCode)
+            var editedbookDetail = client.PutAsJsonAsync(apiUrl+"/UpdateBook", bookList).Result;
+            if (editedbookDetail.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Details(int id = 0)
+        public async Task<ActionResult> Details(int id = 0)
         {
-            var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetBookDetails", id).Result;
-            if (getEmployee.IsSuccessStatusCode)
+            var bookDetailView = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result;
+            if (bookDetailView.IsSuccessStatusCode)
             {
-                return View(getEmployee);
+                string apiResponse = await bookDetailView.Content.ReadAsStringAsync();
+                bookDetails = JsonConvert.DeserializeObject<BookList>(apiResponse);
+                return View(bookDetails);
             }
-            return View(getEmployee);
+            return View(bookDetails);
         }
         public async Task<ActionResult> Delete(int id = 0)
         {

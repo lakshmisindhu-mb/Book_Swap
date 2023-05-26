@@ -7,15 +7,16 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="AddBook">Add New Book</a>
+    <a asp-action="AddBook" asp-controller="Book">Add New Book</a>
+    <a asp-action="AddUserBookTransaction">Add User Book Transaction</a>
 </p>
 
-@*<form asp-controller="Book" asp-action="SearchBook">
+<form asp-action="SearchBook" method="POST">
     <p>
         Title: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
-</form>*@
+</form>
 
 <table class="table">
     <thead>
