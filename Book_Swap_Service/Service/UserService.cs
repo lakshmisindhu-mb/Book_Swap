@@ -20,6 +20,16 @@ namespace Book_Swap_Service.Service
             this.bookSwapContext = bookSwapContext;
             _encrypt = encrypt;
         }
+
+        public List<User> GetUserList()
+        {
+            return bookSwapContext.Users.ToList();
+        }
+
+        public User GetUserDetails(int bookID)
+        {
+            return bookSwapContext.Users.Find(bookID);
+        }
         public bool CheckEmail(User emailCheck)
         {
             var Email = bookSwapContext.Users.Where(x => x.EmailId == emailCheck.EmailId).FirstOrDefault();
