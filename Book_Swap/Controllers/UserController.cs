@@ -14,12 +14,30 @@ namespace Book_Swap_API.Controllers
         private readonly BookSwapContext bookSwapContext;
         private readonly IUserInterface userInterface;
         private readonly CrudStatus crudStatus;
+        private User userDetail;
 
         public UserController(BookSwapContext bookSwapContext, IUserInterface userInterface)
         {
             this.bookSwapContext = bookSwapContext;
             this.userInterface = userInterface;
             crudStatus = new CrudStatus();
+            userDetail = new User();
+        }
+
+        [HttpGet]
+        [Route("UserList")]
+
+        public JsonResult GetUserList()
+        {
+            try
+            {
+                List<User> list = userInterface.GetUserList();
+                return new JsonResult(list);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -96,7 +114,7 @@ namespace Book_Swap_API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("DeleteUser")]
         public JsonResult DeleteUser(int Id)
         {
@@ -146,6 +164,23 @@ namespace Book_Swap_API.Controllers
             {
                 return new JsonResult(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("GetUserDetails")]
+        public User GetUserDetails(int user)
+        {
+            try
+            {
+                userDetail = userInterface.GetUserDetails(user);
+                crudStatus.Message = "User Details";
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return userDetail;
         }
 
     }

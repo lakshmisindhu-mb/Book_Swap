@@ -17,7 +17,7 @@ namespace Book_Swap_UI_Design.Controllers
         public BookController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/Book";
+            apiUrl = "http://localhost:81/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
         }
@@ -28,6 +28,29 @@ namespace Book_Swap_UI_Design.Controllers
                 if (ModelState.IsValid)
                 {                    
                     var bookList = client.GetAsync(apiUrl+ string.Format("/GetBookLIst")).Result;
+                    if (bookList.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await bookList.Content.ReadAsStringAsync();
+                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse);
+                        return View(bookList1);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchBook(string searchString, bool notUsed)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var bookList = client.PostAsJsonAsync(apiUrl + string.Format("/SearchBook"), searchString).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
                         string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -95,7 +118,7 @@ namespace Book_Swap_UI_Design.Controllers
             var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetBookDetails", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
-                return View();
+                return View(getEmployee);
             }
             return View(getEmployee);
         }
