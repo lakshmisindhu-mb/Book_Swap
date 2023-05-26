@@ -1,4 +1,5 @@
-﻿using Book_Swap_Models.Models;
+﻿using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using Book_Swap_UI_Design.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -31,9 +32,9 @@ namespace Book_Swap_UI_Design.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public ActionResult Login()
+        public IActionResult Login()
         {
-            return View();
+            return View("Login");
         }
 
         [HttpPost]
@@ -41,8 +42,14 @@ namespace Book_Swap_UI_Design.Controllers
         {
             if (ModelState.IsValid)
             {
-                string apiUrl = "https://localhost:7177/api/Book";
-                var user = client.PostAsJsonAsync(apiUrl + string.Format("/Login"), login).Result;
+                string apiUrl = "https://localhost:7177/api/user";
+                var obj = new User()
+                {
+                    UserName = login.UserName,
+                    UserKey = login.Password,
+                    EmailId =  login.UserName
+                };
+                var user = client.PostAsJsonAsync(apiUrl + string.Format("/Login"), obj).Result;
                 if (user.IsSuccessStatusCode)
                 {                    
                     return Redirect("/home/welcomepage");
@@ -53,6 +60,35 @@ namespace Book_Swap_UI_Design.Controllers
                 }
             }
             return View(login);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegisterModel registerModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string apiUrl = "https://localhost:7177/api";
+                var obj = new
+                {
+                    userName = registerModel.Email, userKey = registerModel.Password, emailId = registerModel.Email
+                };
+                var user = client.PostAsJsonAsync(apiUrl + string.Format("/user/adduser"), obj).Result;
+                if (user.IsSuccessStatusCode)
+                {
+                    ViewBag.Message = "Registration successful!";
+                    return View(registerModel);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Registration failed. Please try again");
+                }
+            }
+            return View(registerModel);
         }
     }
 }

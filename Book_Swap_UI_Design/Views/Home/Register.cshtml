@@ -1,0 +1,84 @@
+﻿@model Book_Swap_Models.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+<h2>
+    Register
+</h2>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@if (ViewBag.Message != null)
+{
+    <script>
+        document.getElementById("Name").value = "";
+        document.getElementById("Email").value = "";
+        $('form').hide();
+    </script>
+
+    <div class="alert alert-success">@ViewBag.Message Click here to <a href="@Url.Action("Login", "Home")">Login</a> </div>
+}
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true)    
+
+    <div style="border: solid 1px #ccc; padding: 50px 0 30px 30px; border-radius: 5px;
+        width: 550px; margin: auto; display: table;">
+        <table>
+            <tr>
+                <td valign="top">
+                    @Html.LabelFor(model => model.Name)
+                </td>
+                <td style="padding: 0 10px 0 20px">
+                    @Html.EditorFor(model => model.Name)
+                    <div style="height: 20px;">
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td style="padding: 0 0 0 20px">
+                    @Html.EditorFor(model => model.Email)
+                    <div style="height: 20px;">
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    @Html.LabelFor(model => model.Password)
+                </td>
+                <td style="padding: 0 0 0 20px">
+                    @Html.PasswordFor(model => model.Password)
+                    <div style="height: 20px;">
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    @Html.LabelFor(model => model.ConfirmPassword)
+                </td>
+                <td style="padding: 0 0 0 20px">
+                    @Html.PasswordFor(model => model.ConfirmPassword)
+                    <div style="height: 20px;">
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td style ="padding: 20px 0 0 20px">
+                    <input type="submit" value="Register" />
+                    <input type="button" value="Cancel" onclick="location.href='@Url.Action("Login", "Home")'" />
+                </td>
+            </tr>
+        </table>
+
+    </div>
+}
