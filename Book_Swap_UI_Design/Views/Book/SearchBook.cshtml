@@ -80,10 +80,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
                 </td>
-                <td>
-                    @Html.ActionLink("Request", "", new { id=item.Id  }) |
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Request", "", new { id=item.Id  }) |
                    
                 </td>
+                }
             </tr>
         }
     </tbody>
