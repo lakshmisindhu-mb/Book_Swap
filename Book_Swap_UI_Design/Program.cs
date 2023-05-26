@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace Book_Swap_UI_Design
 {
     public class Program
@@ -7,6 +9,17 @@ namespace Book_Swap_UI_Design
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+           builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.LoginPath = "/Home/Login";
+                    options.AccessDeniedPath = "/Home/Login";
+                    options.SlidingExpiration = true;
+                });
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -24,6 +37,7 @@ namespace Book_Swap_UI_Design
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
