@@ -117,7 +117,7 @@ namespace Book_Swap_API.Controllers
             }
             catch (Exception ex)
             {
-                
+                string errorMessage = ex.Message;
             }
             return bookDetail;
         }
@@ -130,7 +130,7 @@ namespace Book_Swap_API.Controllers
             try
             {
                 bookInterface.AddUserBookTransaction(transaction);
-                crudStatus.Message = "Transaction Added Succesfully";
+                crudStatus.Message = "User book Transaction Added Succesfully";
                 return new JsonResult(crudStatus);
             }
             catch (Exception ex)
@@ -146,7 +146,7 @@ namespace Book_Swap_API.Controllers
             try
             {
                 bookInterface.UpdateUserBookTransaction(transaction);
-                crudStatus.Message = "Transaction Updated Successfully";
+                crudStatus.Message = "User book Transaction Updated Successfully";
                 return new JsonResult(crudStatus);
             }
             catch (Exception ex)
@@ -163,7 +163,7 @@ namespace Book_Swap_API.Controllers
             try
             {
                 transactions = bookInterface.GetUserBookTransaction(borrowerId, lenderId);
-                crudStatus.Message = "transactions fetched Successfully";
+                crudStatus.Message = "User book Transactions fetched Successfully";
                 return transactions;
             }
             catch (Exception ex)
