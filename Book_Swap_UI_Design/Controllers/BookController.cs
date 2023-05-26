@@ -31,7 +31,7 @@ namespace Book_Swap_UI_Design.Controllers
                     if (bookList.IsSuccessStatusCode)
                     {
                         string apiResponse = await bookList.Content.ReadAsStringAsync();
-                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse);
+                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse)!;
                         return View(bookList1);
                     }
                 }

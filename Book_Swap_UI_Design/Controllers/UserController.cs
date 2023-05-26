@@ -14,7 +14,7 @@ namespace Book_Swap_UI_Design.Controllers
         public UserController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/Book";
+            apiUrl = "https://localhost:7177/api/User";
             userList1 = new List<User>();
             userDetails = new User();
         }
@@ -28,7 +28,7 @@ namespace Book_Swap_UI_Design.Controllers
                     if (userlist.IsSuccessStatusCode)
                     {
                         string apiResponse = await userlist.Content.ReadAsStringAsync();
-                        userList1 = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                        userList1 = JsonConvert.DeserializeObject<List<User>>(apiResponse)!;
                         return View(userList1);
                     }
                 }
