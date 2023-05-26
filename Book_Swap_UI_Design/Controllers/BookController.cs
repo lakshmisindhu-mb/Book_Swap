@@ -202,7 +202,7 @@ namespace Book_Swap_UI_Design.Controllers
             }
         }
 
-        public async Task<IActionResult> SearchBook(IFormCollection form)
+        public async Task<IActionResult> SearchBooks(IFormCollection form)
         {
             try
             {
