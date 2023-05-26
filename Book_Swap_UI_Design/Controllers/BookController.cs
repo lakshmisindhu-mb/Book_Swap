@@ -17,7 +17,7 @@ namespace Book_Swap_UI_Design.Controllers
         public BookController()
         {
             client = new HttpClient();
-            apiUrl = "http://localhost:81/api/Book";
+            apiUrl = "https://localhost:7177/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
         }
@@ -202,7 +202,7 @@ namespace Book_Swap_UI_Design.Controllers
             }
         }
 
-        public async Task<IActionResult> SearchBook(IFormCollection form)
+        public async Task<IActionResult> SearchBooks(IFormCollection form)
         {
             try
             {
