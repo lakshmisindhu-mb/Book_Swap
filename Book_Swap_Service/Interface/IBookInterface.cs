@@ -10,7 +10,7 @@ namespace Book_Swap_Service.Interface
     public interface IBookInterface
     {
         public List<BookList> GetBookList();
-        List<BookList> SearchBook(string searchText);
+        List<BookList> SearchBook(string? searchText);
         public void AddBook(BookList bookList);
         public void UpdateBook(BookList bookList);
         public void DeleteBook(BookList bookID);

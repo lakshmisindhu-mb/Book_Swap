@@ -6,8 +6,16 @@
 
 <h1>Search Book</h1>
 <br />
-@Html.TextBox("searchText")
-<input type="submit" value="Submit" />
+
+
+@using (Html.BeginForm("SearchBook", "Book"))
+{
+   @* @Html.TextBox("searchText")*@
+    <input type="text" name="searchText" />
+
+    <input type="submit" value="Submit" />
+}
+
 <table class="table">
     <thead>
         <tr>

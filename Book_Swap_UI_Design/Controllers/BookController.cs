@@ -179,7 +179,7 @@ namespace Book_Swap_UI_Design.Controllers
             }
         }
 
-        public IActionResult SearchBook(IFormCollection form)
+        public async Task<IActionResult> SearchBook(IFormCollection form)
         {
             try
             {
@@ -191,9 +191,12 @@ namespace Book_Swap_UI_Design.Controllers
                         searchText = "";
                     }
                     var bookList = client.GetAsync(apiUrl + string.Format("/SearchBook?searchText=" + searchText)).Result;
+                    
                     if (bookList.IsSuccessStatusCode)
                     {
-                        return View(bookList);
+                        string apiResponse = await bookList.Content.ReadAsStringAsync();
+                        bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse);
+                        return View(bookList1);
                     }
                 }
                 return View();

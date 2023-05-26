@@ -22,7 +22,7 @@ namespace Book_Swap_Service.Service
         {
             return bookSwapContext.BookLists.ToList();
         }
-        public List<BookList> SearchBook(string searchText)
+        public List<BookList> SearchBook(string? searchText)
         {
             if(string.IsNullOrEmpty(searchText))
             {
