@@ -44,7 +44,7 @@ namespace Book_Swap_API.Controllers
         [HttpGet]
         [Route("SearchBook")]
 
-        public JsonResult SearchBook(string searchText)
+        public JsonResult SearchBook(string? searchText = "")
         {
             try
             {
