@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Book_Swap_Models.UserBookTransaction>
+﻿@model IEnumerable<Book_Swap_Models.GetUserBookTransaction>
 
 @{
     ViewData["Title"] = "GetUserBookTransaction";
@@ -7,23 +7,23 @@
 <h1>GetUserBookTransaction</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddUserBookTransactions">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+          @*  <th>
                 @Html.DisplayNameFor(model => model.Id)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowerName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BorrowerId)
+                @Html.DisplayNameFor(model => model.LenderName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LenderId)
-            </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.BookId)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.BorrowDate)
             </th>
@@ -42,18 +42,18 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                    @Html.DisplayFor(modelItem => item.BorrowerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BorrowerId)
+                    @Html.DisplayFor(modelItem => item.LenderName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LenderId)
-            </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.BookId)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.BorrowDate)
             </td>
@@ -67,9 +67,9 @@
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.ActionLink("UpdateUserBookTransactionDetails", "UpdateUserBookTransactionDetails", new { id=item.Id  }) |
-                @Html.ActionLink("DetailsUserBookTransactionDetails", "DetailsUserBookTransactionDetails", new { id=item.Id }) |
-                @Html.ActionLink("DeleteUserBookTransactionDetails", "DeleteUserBookTransactionDetails", new { id=item.Id })
+                @Html.ActionLink("UpdateUserBookTransactionDetails", "UpdateUserBookTransactionDetails", new { id=item.UserBookTransactionId  }) |
+                @Html.ActionLink("DetailsUserBookTransactionDetails", "DetailsUserBookTransactionDetails", new { id=item.UserBookTransactionId }) |
+                @Html.ActionLink("DeleteUserBookTransactionDetails", "DeleteUserBookTransactionDetails", new { id=item.UserBookTransactionId })
             </td>
         </tr>
 }

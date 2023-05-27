@@ -193,7 +193,7 @@ namespace Book_Swap_Service.Service
 
         private void AddRatingDB(RateUserRequest request)
         {
-            var ratings = new UserRatings { LenderId = request.FromUserId, BorrowerId = request.BorrowerId, Rating = request.Rating };
+            var ratings = new UserRating { LenderId = request.FromUserId, BorrowerId = request.BorrowerId, Rating = request.Rating };
             bookSwapContext.UserRatings.Add(ratings);
             bookSwapContext.SaveChanges();
 
@@ -203,7 +203,7 @@ namespace Book_Swap_Service.Service
             if (user != null)
             {
                 user.UpdatedDate = DateTime.Now;
-                user.AverageRating = Math.Round(rating, 1); ;
+                user.AverageRating = Math.Round(rating.Value, 1); ;
                 bookSwapContext.Entry(user).State = EntityState.Modified;
                 bookSwapContext.SaveChanges();
             }

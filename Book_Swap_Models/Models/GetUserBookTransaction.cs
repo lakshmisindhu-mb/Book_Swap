@@ -9,7 +9,11 @@ public partial class GetUserBookTransaction
 
     public string BorrowerName { get; set; } = null!;
 
+    public int BorrowerId { get; set; }
+
     public string LenderName { get; set; } = null!;
+
+    public int LenderId { get; set; }
 
     public string BookName { get; set; } = null!;
 

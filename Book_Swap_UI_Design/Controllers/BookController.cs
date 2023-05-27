@@ -154,7 +154,7 @@ namespace Book_Swap_UI_Design.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public async Task<IActionResult> AddUserBookTransaction()
+        public async Task<IActionResult> AddUserBookTransactions()
         {
             var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookLIst")).Result;
             if (bookList.IsSuccessStatusCode)
@@ -189,10 +189,10 @@ namespace Book_Swap_UI_Design.Controllers
                     var getEmployee = client.PostAsJsonAsync(bookapiUrl +string.Format("/AddUserBookTransaction"), UserBookTransaction).Result;
                     if (getEmployee.IsSuccessStatusCode)
                     {
-                        return View();
+                        return RedirectToAction("GetUserBookTransaction");
                     }
                 }
-                return View();
+                return RedirectToAction("GetUserBookTransaction");
             }
             catch (Exception ex)
             {
@@ -252,7 +252,7 @@ namespace Book_Swap_UI_Design.Controllers
                     if (bookList.IsSuccessStatusCode)
                     {
                         string apiResponse = await bookList.Content.ReadAsStringAsync();
-                        List<UserBookTransaction> userBookTransactions = JsonConvert.DeserializeObject<List<UserBookTransaction>>(apiResponse)!;
+                        List<GetUserBookTransaction> userBookTransactions = JsonConvert.DeserializeObject<List<GetUserBookTransaction>>(apiResponse)!;
                         return View(userBookTransactions);
                     }
                 }

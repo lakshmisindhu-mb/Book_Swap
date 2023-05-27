@@ -191,9 +191,9 @@ namespace Book_Swap_API.Controllers
 
         [HttpGet]
         [Route("GetUserBookTransaction")]
-        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
+        public List<GetUserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
         {
-            List<UserBookTransaction> transactions = new();
+            List<GetUserBookTransaction> transactions = new();
             try
             {
                 transactions = bookInterface.GetUserBookTransaction(borrowerId, lenderId);
