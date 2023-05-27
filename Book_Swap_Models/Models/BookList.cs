@@ -22,4 +22,6 @@ public partial class BookList
     public DateTime? CreatedDate { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
+
+    public int? OwnerId { get; set; }
 }
