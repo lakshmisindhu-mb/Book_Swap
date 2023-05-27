@@ -14,7 +14,7 @@ namespace Book_Swap_UI_Design.Controllers
         public UserController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/User";
+            apiUrl = "http://localhost:81/api/User";
             userList1 = new List<User>();
             userDetails = new User();
         }
@@ -41,13 +41,13 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddUser()
+        public IActionResult AddNewUser()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddUser(User userdetails)
+        public IActionResult AddNewUser(User userdetails)
         {
             try
             {
@@ -87,14 +87,16 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Details(int id = 0)
+        public async Task<ActionResult> Details(int id = 0)
         {
-            var getEmployee = client.PostAsJsonAsync(apiUrl + "api/GetUserDetails", id).Result;
-            if (getEmployee.IsSuccessStatusCode)
+            var userdetailView = client.PostAsJsonAsync(apiUrl + "/GetUserDetails", id).Result;
+            if (userdetailView.IsSuccessStatusCode)
             {
-                return View(getEmployee);
+                string apiResponse = await userdetailView.Content.ReadAsStringAsync();
+                userDetails = JsonConvert.DeserializeObject<User>(apiResponse);
+                return View(userDetails);
             }
-            return View(getEmployee);
+            return View(userDetails);
         }
         public async Task<ActionResult> Delete(int id = 0)
         {
