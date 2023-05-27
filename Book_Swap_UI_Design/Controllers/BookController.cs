@@ -17,6 +17,7 @@ namespace Book_Swap_UI_Design.Controllers
         private BookList bookDetails;
         private List<User> userList1;
         private readonly string userapiUrl;
+        private UserBookTransaction userBookTransactionDetails;
         public BookController()
         {
             client = new HttpClient();
@@ -25,6 +26,7 @@ namespace Book_Swap_UI_Design.Controllers
             bookDetails = new BookList();
             userList1 = new List<User>();
             userapiUrl = "http://localhost:81/api/User";
+            userBookTransactionDetails = new UserBookTransaction();
         }
 
         public async Task<IActionResult> Index()
@@ -197,12 +199,35 @@ namespace Book_Swap_UI_Design.Controllers
                 return View(ex.Message);
             }
         }
-        public ActionResult UpdateUserBookTransaction(int id = 0)
+        public async Task<ActionResult> UpdateUserBookTransactionDetails(int id = 0)
         {
-            return View();
+
+            var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookLIst")).Result;
+            if (bookList.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookList.Content.ReadAsStringAsync();
+                bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse)!;
+                ViewBag.BookList = new SelectList(bookList1, "Id", "BookName");
+            }
+
+            var userlist = client.GetAsync(userapiUrl + string.Format("/UserList")).Result;
+            if (userlist.IsSuccessStatusCode)
+            {
+                string apiResponse = await userlist.Content.ReadAsStringAsync();
+                userList1 = JsonConvert.DeserializeObject<List<User>>(apiResponse)!;
+                ViewBag.UserList = new SelectList(userList1, "Id", "UserName");
+            }
+            var bookDetailView = client.GetAsync(bookapiUrl + string.Format("/GetUserBookTransactionDetails?booklist=" + id)).Result;
+            if (bookDetailView.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookDetailView.Content.ReadAsStringAsync();
+                userBookTransactionDetails = JsonConvert.DeserializeObject<UserBookTransaction>(apiResponse);
+                return View(userBookTransactionDetails);
+            }
+            return View(userBookTransactionDetails);
         }
         [HttpPost]
-        public ActionResult UpdateUserBookTransaction(UserBookTransaction UserBookTransaction)
+        public ActionResult UpdateUserBookTransactionDetails(UserBookTransaction UserBookTransaction)
         {
             string borrowerID = Convert.ToString(Request.Form["UserDropList"]);
             string bookID = Convert.ToString(Request.Form["BookDropList"]);
@@ -265,6 +290,40 @@ namespace Book_Swap_UI_Design.Controllers
             {
                 return View(ex.Message);
             }
+        }
+
+        public async Task<ActionResult> DetailsUserBookTransactionDetails(int id = 0)
+        {
+            var bookDetailView = client.GetAsync(bookapiUrl + string.Format("/GetUserBookTransactionDetails?booklist=" + id)).Result;
+            if (bookDetailView.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookDetailView.Content.ReadAsStringAsync();
+                userBookTransactionDetails = JsonConvert.DeserializeObject<UserBookTransaction>(apiResponse);
+                return View(userBookTransactionDetails);
+            }
+            return View(userBookTransactionDetails);
+        }
+
+        public async Task<ActionResult> DeleteUserBookTransactionDetails(int id = 0)
+        {
+            var bookList = client.GetAsync(bookapiUrl + string.Format("/GetUserBookTransactionDetails?booklist=" + id)).Result;
+            if (bookList.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookList.Content.ReadAsStringAsync();
+                userBookTransactionDetails = JsonConvert.DeserializeObject<UserBookTransaction>(apiResponse);
+                return View(userBookTransactionDetails);
+            }
+            return View(userBookTransactionDetails);
+        }
+        [HttpPost, ActionName("DeleteUserBookTransaction")]
+        public ActionResult DeleteUserBookTransactionConfirmed(int id)
+        {
+            var userBookTransaction = client.PostAsJsonAsync(bookapiUrl + "/DeleteUserBookTransaction", id).Result;
+            if (userBookTransaction.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
         {

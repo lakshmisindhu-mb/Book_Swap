@@ -16,6 +16,7 @@ namespace Book_Swap_API.Controllers
         private readonly IBookInterface bookInterface;
         private readonly CrudStatus crudStatus;
         private BookList bookDetail;
+        private UserBookTransaction userbookTransactionDetail;
 
         public BookController(BookSwapContext bookSwapContext, IBookInterface bookInterface)
         {
@@ -23,6 +24,7 @@ namespace Book_Swap_API.Controllers
             this.bookInterface = bookInterface;
             crudStatus = new CrudStatus();
             bookDetail = new BookList();
+            userbookTransactionDetail = new UserBookTransaction();
         }
 
         [HttpGet]
@@ -105,6 +107,22 @@ namespace Book_Swap_API.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("DeleteUserBookTransaction")]
+        public JsonResult DeleteUserBookTransaction(UserBookTransaction userBookTransaction)
+        {
+            try
+            {
+                bookInterface.DeleteUserBookTransaction(userBookTransaction);
+                crudStatus.Message = "User Book Transaction Deleted Successfully";
+                return new JsonResult(crudStatus);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+
         [HttpGet]
         [Route("GetBookDetails")]
         public BookList GetBookDetails(int booklist)
@@ -122,6 +140,22 @@ namespace Book_Swap_API.Controllers
             return bookDetail;
         }
 
+        [HttpGet]
+        [Route("GetUserBookTransactionDetails")]
+        public UserBookTransaction GetUserBookTransactionDetails(int booklist)
+        {
+            try
+            {
+                userbookTransactionDetail = bookInterface.GetUserBookTransactionDetails(booklist);
+                crudStatus.Message = "User book Transaction Details";
+
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = ex.Message;
+            }
+            return userbookTransactionDetail;
+        }
 
         [HttpPost]
         [Route("AddUserBookTransaction")]
