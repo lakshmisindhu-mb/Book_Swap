@@ -1,4 +1,5 @@
 ﻿using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace Book_Swap_Service.Interface
         public void UpdateUserBookTransaction(UserBookTransaction transaction);
 
         public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
+        public void RequestBook(RequestBook request);
     }
 }

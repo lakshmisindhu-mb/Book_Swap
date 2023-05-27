@@ -113,7 +113,7 @@ namespace Book_Swap_API.Controllers
             {
                 bookDetail = bookInterface.GetBookDetails(booklist);
                 crudStatus.Message = "Book Details";
-                
+
             }
             catch (Exception ex)
             {
@@ -171,6 +171,18 @@ namespace Book_Swap_API.Controllers
                 string errorMessage = ex.Message;
                 return transactions;
             }
+        }
+
+
+        [HttpPost]
+        [Route("RequestBook")]
+        public void RequestBook(RequestBook request)
+        {
+            try
+            {
+                bookInterface.RequestBook(request);
+            }
+            catch (Exception ex) { }
         }
     }
 }

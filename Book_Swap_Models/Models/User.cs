@@ -17,7 +17,7 @@ public partial class User
 
     public DateTime? UpdatedDate { get; set; }
 
-    public double AverageRating { get; set; }
-
     public bool? IsActive { get; set; }
+
+    public double? AverageRating { get; set; }
 }

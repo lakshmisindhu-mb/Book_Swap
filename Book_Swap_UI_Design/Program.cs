@@ -22,6 +22,26 @@ namespace Book_Swap_UI_Design
 
             builder.Services.AddControllersWithViews();
 
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(
+            //                      builder =>
+            //                      {
+            //                          builder.WithOrigins(
+            //                              "https://localhost:7022").AllowAnyHeader().AllowAnyMethod();
+            //                      });
+            //});
+
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //                      policy =>
+            //                      {
+            //                          policy.WithOrigins("http://example.com",
+            //                                              "http://www.contoso.com");
+            //                      });
+            //});
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
