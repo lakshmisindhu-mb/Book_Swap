@@ -30,6 +30,12 @@ namespace Book_Swap_Service.Service
         {
             return bookSwapContext.Users.Find(bookID);
         }
+
+        public List<GetUserRating> GetUserRatings()
+        {
+            return bookSwapContext.GetUserRatings.ToList();
+        }
+        
         public bool CheckEmail(User emailCheck)
         {
             var Email = bookSwapContext.Users.Where(x => x.EmailId == emailCheck.EmailId).FirstOrDefault();

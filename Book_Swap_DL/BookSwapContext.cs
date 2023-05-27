@@ -24,6 +24,8 @@ public partial class BookSwapContext : DbContext
 
     public virtual DbSet<GetUserBookTransaction> GetUserBookTransactions { get; set; }
 
+    public virtual DbSet<GetUserRating> GetUserRatings { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserBookTransaction> UserBookTransactions { get; set; }
@@ -33,7 +35,6 @@ public partial class BookSwapContext : DbContext
     public virtual DbSet<UserRating> UserRatings { get; set; }
 
     public virtual DbSet<WishListBook> WishListBooks { get; set; }
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -81,6 +82,17 @@ public partial class BookSwapContext : DbContext
                 .HasColumnName("returnDate");
             entity.Property(e => e.Review).HasMaxLength(250);
             entity.Property(e => e.UserBookTransactionId).HasColumnName("UserBookTransactionID");
+        });
+
+        modelBuilder.Entity<GetUserRating>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("GetUserRatings");
+
+            entity.Property(e => e.BorrowerName).HasMaxLength(250);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.LenderName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<User>(entity =>
