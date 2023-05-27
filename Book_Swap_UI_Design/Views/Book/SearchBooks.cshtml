@@ -16,7 +16,7 @@
     <input type="submit" value="Submit" />
 }
 
-<table class="table">
+<table class="table" id="searchTable">
     <thead>
         <tr>
             <th>
@@ -40,12 +40,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
+            <th></th>
            @* <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
             </th>*@
+            
             <th></th>
         </tr>
     </thead>
@@ -75,6 +77,12 @@
                     @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </td>
                 @*<td>
+                    <label display = "None">@item.OwnerId</label>
+                </td>*@
+                <td>
+                    <label display="None">@User?.Identity?.Name</label>
+                </td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
@@ -83,7 +91,12 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <td>
-                        @Html.ActionLink("Request", "", new { id=item.Id  }) |
+                      @*  @Html.ActionLink("Request", "", new { id=item.Id  }) |*@
+
+                      @*  <input type="text" name="searchText" />
+
+                        <input type="submit" value="Submit" />*@
+                        <button class="btnSelect">Request</button>
                    
                 </td>
                 }
@@ -91,3 +104,57 @@
         }
     </tbody>
 </table>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        // code to read selected table row cell data (values).
+        $("#searchTable").on('click', '.btnSelect', function () {
+            // get the current row
+            var currentRow = $(this).closest("tr");
+
+           
+            var col2 = currentRow.find("td:eq(0)").text(); // get current row 2nd TD
+            var col3 = currentRow.find("td:eq(7)").text(); // get current row 3rd TD
+          //  var data =  col2 + "\n" + col3;
+            
+          //  alert(data);
+            var requestData = {
+                BookId: parseInt(col2),
+                BorrowerUsername: $.trim(col3)
+            };
+
+
+            $.ajax({
+                url: 'https://localhost:7177/api/Book/RequestBook',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                   
+                },
+                success: function (result) {
+                    alert(result);
+
+                     currentRow.find(".btnSelect").attr('disabled', 'disabled');
+                },
+                async: true,
+                processData: false
+            });
+            //currentRow.find(".btnSelect").attr('disabled', 'disabled');
+
+            //var $td = $(this).closest('td');
+            //$td.find($(':button[value="Request"]')).prop('disabled', true);
+            $(this).prop('disabled', true);
+            $(this).text('Request Sent');
+
+        });
+    });
+
+    //$('#searchTable tbody').on('click', 'a.delete', function (e) {
+    //    //onDelete($(this).data('user-id'));
+    //});
+</script>
