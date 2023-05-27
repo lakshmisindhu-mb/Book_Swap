@@ -17,10 +17,10 @@ namespace Book_Swap_Service.Interface
         public void DeleteBook(BookList bookID);
         public BookList GetBookDetails(int bookID);
         public void AddUserBookTransaction(UserBookTransaction transaction);
-
         public void UpdateUserBookTransaction(UserBookTransaction transaction);
-
-        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
+        public List<GetUserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
+        public void DeleteUserBookTransaction(UserBookTransaction userBookTransactionID);
+        public UserBookTransaction GetUserBookTransactionDetails(int userBookTransactionID);
         public void RequestBook(RequestBook request);
     }
 }

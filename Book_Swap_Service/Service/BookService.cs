@@ -61,9 +61,21 @@ namespace Book_Swap_Service.Service
             bookSwapContext.BookLists.Remove(bookID);
         }
 
+       
+
         public BookList GetBookDetails(int bookID)
         {
             return bookSwapContext.BookLists.Find(bookID);
+        }
+
+        public UserBookTransaction GetUserBookTransactionDetails(int userBookTransactionID)
+        {
+            return bookSwapContext.UserBookTransactions.Find(userBookTransactionID);
+        }
+
+        public void DeleteUserBookTransaction(UserBookTransaction userBookTransactionID)
+        {
+            bookSwapContext.UserBookTransactions.Remove(userBookTransactionID);
         }
 
         public void AddUserBookTransaction(UserBookTransaction transaction)
@@ -94,26 +106,26 @@ namespace Book_Swap_Service.Service
             bookSwapContext.SaveChanges();
         }
 
-        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
+        public List<GetUserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId)
         {
-            List<UserBookTransaction> transactions = new();
+            List<GetUserBookTransaction> transactions = new();
             try
             {
                 if (borrowerId == 0 && lenderId > 0)
                 {
-                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.LenderId == lenderId).ToList();
+                    transactions = bookSwapContext.GetUserBookTransactions.Where(y => y.LenderId == lenderId).ToList();
                 }
                 else if (borrowerId > 0 && lenderId == 0)
                 {
-                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.BorrowerId == borrowerId).ToList();
+                    transactions = bookSwapContext.GetUserBookTransactions.Where(y => y.BorrowerId == borrowerId).ToList();
                 }
                 else if (borrowerId > 0 && lenderId > 0)
                 {
-                    transactions = bookSwapContext.UserBookTransactions.Where(y => y.BorrowerId == borrowerId && y.LenderId == lenderId).ToList();
+                    transactions = bookSwapContext.GetUserBookTransactions.Where(y => y.BorrowerId == borrowerId && y.LenderId == lenderId).ToList();
                 }
                 else
                 {
-                    transactions = bookSwapContext.UserBookTransactions.ToList();
+                    transactions = bookSwapContext.GetUserBookTransactions.ToList();
                 }
 
                 return transactions;

@@ -1,5 +1,7 @@
 ﻿using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace Book_Swap_UI_Design.Controllers
@@ -14,7 +16,7 @@ namespace Book_Swap_UI_Design.Controllers
         public UserController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/User";
+            apiUrl = "http://localhost:81/api/User";
             userList1 = new List<User>();
             userDetails = new User();
         }
@@ -53,8 +55,47 @@ namespace Book_Swap_UI_Design.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var getEmployee = client.PostAsJsonAsync(apiUrl + "api/AddUser", userdetails).Result;
+                    var getEmployee = client.PostAsJsonAsync(apiUrl + "/AddUser", userdetails).Result;
                     if (getEmployee.IsSuccessStatusCode)
+                    {
+                        return View();
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RateNewUser()
+        {
+            var userlist = client.GetAsync(apiUrl + string.Format("/UserList")).Result;
+            if (userlist.IsSuccessStatusCode)
+            {
+                string apiResponse = await userlist.Content.ReadAsStringAsync();
+                userList1 = JsonConvert.DeserializeObject<List<User>>(apiResponse)!;
+                ViewBag.UserList = new SelectList(userList1, "Id", "UserName");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RateNewUser(RateUserRequest userdetails)
+        {
+            string borrowerID = Convert.ToString(Request.Form["BorrowerDropList"]);
+            string FromUserId = Convert.ToString(Request.Form["FromuserDropList"]);
+
+            userdetails.BorrowerId = Convert.ToInt32(borrowerID);
+            userdetails.FromUserId = Convert.ToInt32(FromUserId);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var rateusertdetails = client.PostAsJsonAsync(apiUrl + "/RateUser", userdetails).Result;
+                    if (rateusertdetails.IsSuccessStatusCode)
                     {
                         return View();
                     }
