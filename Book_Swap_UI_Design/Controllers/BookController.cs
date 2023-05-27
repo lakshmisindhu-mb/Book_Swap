@@ -17,7 +17,7 @@ namespace Book_Swap_UI_Design.Controllers
         public BookController()
         {
             client = new HttpClient();
-            apiUrl = "http://localhost:81/api/Book";
+            apiUrl = " http://localhost:5177/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
         }
