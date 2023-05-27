@@ -183,5 +183,23 @@ namespace Book_Swap_API.Controllers
             return userDetail;
         }
 
+        [HttpGet]
+        [Route("GetUserRatings")]
+        public List<GetUserRating> GetUserRatings(int user)
+        {
+            List<GetUserRating> getUserRating = new();
+            try
+            {
+                getUserRating = userInterface.GetUserRatings();
+                crudStatus.Message = "User Ratings Details fetched Successfully";
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return getUserRating;
+        }
+
     }
 }

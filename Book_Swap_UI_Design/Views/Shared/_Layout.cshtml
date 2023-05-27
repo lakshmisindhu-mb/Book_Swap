@@ -32,6 +32,9 @@
                              <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="GetUserBookTransactions">My Transactions</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="GetUserRatingList">User Ratings</a>
+                            </li>
                         }
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {

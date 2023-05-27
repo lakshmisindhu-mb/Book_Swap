@@ -22,5 +22,7 @@ namespace Book_Swap_Service.Interface
 
         public User GetUserDetails(int bookID);
 
+        public List<GetUserRating> GetUserRatings();
+
     }
 }

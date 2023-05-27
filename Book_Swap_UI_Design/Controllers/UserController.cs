@@ -16,7 +16,7 @@ namespace Book_Swap_UI_Design.Controllers
         public UserController()
         {
             client = new HttpClient();
-            apiUrl = "http://localhost:81/api/User";
+            apiUrl = "https://localhost:7177/api/User";
             userList1 = new List<User>();
             userDetails = new User();
         }
@@ -159,6 +159,30 @@ namespace Book_Swap_UI_Design.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserRatingList()
+        {
+            List<GetUserRating> userRatingList = new();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var userlist = client.GetAsync(apiUrl + string.Format("/GetUserRatings")).Result;
+                    if (userlist.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await userlist.Content.ReadAsStringAsync();
+                        userRatingList = JsonConvert.DeserializeObject<List<GetUserRating>>(apiResponse)!;
+                        return View(userRatingList);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
         }
         protected override void Dispose(bool disposing)
         {
