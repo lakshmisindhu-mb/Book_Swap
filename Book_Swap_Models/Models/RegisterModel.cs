@@ -14,7 +14,7 @@ namespace Book_Swap_Models.Models
         [StringLength(30)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Please enter your email.")]
+        [Required(ErrorMessage = "Please enter valid email.")]
         [DataType(DataType.EmailAddress)]
         [StringLength(50)]
         public string Email { get; set; }

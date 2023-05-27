@@ -1,5 +1,6 @@
 ﻿using Book_Swap_DL;
 using Book_Swap_Models;
+using Book_Swap_Models.Models;
 using Book_Swap_Service.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -133,6 +134,18 @@ namespace Book_Swap_Service.Service
             {
                 throw;
 
+            }
+        }
+
+        public void RequestBook(RequestBook request)
+        {
+            if (request.BookId > 0 && !string.IsNullOrEmpty(request.BorrowerUsername) )
+            {
+                var book = bookSwapContext.BookLists.Where(x => x.Id == request.BookId).FirstOrDefault();
+                var user = bookSwapContext.Users.Where(x => x.UserName == request.BorrowerUsername).FirstOrDefault();
+                BookRequest brequest = new BookRequest { BorrowerId = user?.Id, BookId = book?.Id, OwnerId = book?.OwnerId };
+                bookSwapContext.BookRequests.Add(brequest);
+                bookSwapContext.SaveChanges();
             }
         }
 

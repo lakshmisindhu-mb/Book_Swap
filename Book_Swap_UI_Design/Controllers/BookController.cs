@@ -21,7 +21,7 @@ namespace Book_Swap_UI_Design.Controllers
         public BookController()
         {
             client = new HttpClient();
-            bookapiUrl = "http://localhost:81/api/Book";
+            bookapiUrl = "https://localhost:7177/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
             userList1 = new List<User>();
@@ -242,7 +242,7 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return View("Index");
         }
-        public async Task<IActionResult> GetUserBookTransaction()
+        public async Task<IActionResult> GetUserBookTransactions()
         {
             try
             {

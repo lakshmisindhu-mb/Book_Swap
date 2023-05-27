@@ -23,6 +23,16 @@ builder.Services.AddScoped<IWishListService, WishListService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      builder =>
+                      {
+                          builder.WithOrigins(
+                              "https://localhost:7022").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +43,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(builder =>
+{
+    builder.WithOrigins(
+        "https://localhost:7022")
+  .AllowAnyMethod()
+  .AllowAnyHeader();
+});
 
 app.UseAuthorization();
 
