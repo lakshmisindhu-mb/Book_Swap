@@ -13,15 +13,15 @@
 <body>
 
     <div class="background">
-        @*<div class="shape"></div>
-        <div class="shape"></div>*@
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
     <div>
         <form asp-action="Login">
             <h3>Login Here</h3>
             <div asp-validation-summary="ModelOnly" class="text-warning"></div>
             <div class="form-group">
-                <input type="email" asp-for="UserName" placeholder="email@example.com/user" class="form-control" required="" />
+                <input type="email" asp-for="UserName" placeholder="email@example.com" class="form-control" required="" />
                 <span asp-validation-for="UserName" class="text-warning"></span>
             </div>
             <div class="form-group">

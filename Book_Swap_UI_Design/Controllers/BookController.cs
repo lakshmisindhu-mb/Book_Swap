@@ -42,7 +42,7 @@ namespace Book_Swap_UI_Design.Controllers
                 return View(ex.Message);
             }
         }
-
+       
         [HttpPost]
         public async Task<IActionResult> SearchBook(string searchString, bool notUsed)
         {

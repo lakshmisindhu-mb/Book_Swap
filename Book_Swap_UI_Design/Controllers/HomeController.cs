@@ -51,8 +51,8 @@ namespace Book_Swap_UI_Design.Controllers
                 };
                 var user = client.PostAsJsonAsync(apiUrl + string.Format("/Login"), obj).Result;
                 if (user.IsSuccessStatusCode)
-                {                    
-                    return RedirectToAction("Register");
+                {
+                    return Redirect("/home/welcomepage");
                 }
                 else
                 {
