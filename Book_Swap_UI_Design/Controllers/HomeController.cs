@@ -45,7 +45,7 @@ namespace Book_Swap_UI_Design.Controllers
         {
             if (ModelState.IsValid)
             {
-                string apiUrl = "http://localhost:81/api/user";
+                string apiUrl = "http://localhost:7177/api/user";
                 var obj = new User()
                 {
                     UserName = login.UserName,
