@@ -14,7 +14,7 @@ namespace Book_Swap_UI_Design.Controllers
         public UserController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/User";
+            apiUrl = "http://localhost:81/api/User";
             userList1 = new List<User>();
             userDetails = new User();
         }
@@ -41,13 +41,13 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddUser()
+        public IActionResult AddNewUser()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddUser(User userdetails)
+        public IActionResult AddNewUser(User userdetails)
         {
             try
             {

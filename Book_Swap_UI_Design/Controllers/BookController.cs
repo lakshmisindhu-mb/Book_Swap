@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Book_Swap_Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -11,23 +12,28 @@ namespace Book_Swap_UI_Design.Controllers
     {
 
         private readonly HttpClient client;
-        private readonly string apiUrl;
+        private readonly string bookapiUrl;
         private List<BookList> bookList1;
         private BookList bookDetails;
+        private List<User> userList1;
+        private readonly string userapiUrl;
         public BookController()
         {
             client = new HttpClient();
-            apiUrl = "https://localhost:7177/api/Book";
+            bookapiUrl = "http://localhost:81/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
+            userList1 = new List<User>();
+            userapiUrl = "http://localhost:81/api/User";
         }
+
         public async Task<IActionResult> Index()
         {
             try
             {                
                 if (ModelState.IsValid)
                 {                    
-                    var bookList = client.GetAsync(apiUrl+ string.Format("/GetBookLIst")).Result;
+                    var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookLIst")).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
                         string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -50,7 +56,7 @@ namespace Book_Swap_UI_Design.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var bookList = client.PostAsJsonAsync(apiUrl + string.Format("/SearchBook"), searchString).Result;
+                    var bookList = client.PostAsJsonAsync(bookapiUrl + string.Format("/SearchBook"), searchString).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
                         string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -67,19 +73,19 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddBook()
+        public IActionResult AddNewBook()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddBook(BookList bookList)
+        public IActionResult AddNewBook(BookList bookList)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var getEmployee = client.PostAsJsonAsync(apiUrl+"api/AddBook", bookList).Result;
+                    var getEmployee = client.PostAsJsonAsync(bookapiUrl + "api/AddBook", bookList).Result;
                     if (getEmployee.IsSuccessStatusCode)
                     {
                         return View();
@@ -94,7 +100,7 @@ namespace Book_Swap_UI_Design.Controllers
         }
         public async Task<ActionResult> Edit(int id = 0)
         {
-            var bookList = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist="+id)).Result;
+            var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookDetails?booklist="+id)).Result;
             if (bookList.IsSuccessStatusCode)
             {
                 string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -106,7 +112,7 @@ namespace Book_Swap_UI_Design.Controllers
         [HttpPost]
         public ActionResult Edit(BookList bookList)
         {
-            var editedbookDetail = client.PutAsJsonAsync(apiUrl+"/UpdateBook", bookList).Result;
+            var editedbookDetail = client.PutAsJsonAsync(bookapiUrl + "/UpdateBook", bookList).Result;
             if (editedbookDetail.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -115,7 +121,7 @@ namespace Book_Swap_UI_Design.Controllers
         }
         public async Task<ActionResult> Details(int id = 0)
         {
-            var bookDetailView = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result;
+            var bookDetailView = client.GetAsync(bookapiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result;
             if (bookDetailView.IsSuccessStatusCode)
             {
                 string apiResponse = await bookDetailView.Content.ReadAsStringAsync();
@@ -126,7 +132,7 @@ namespace Book_Swap_UI_Design.Controllers
         }
         public async Task<ActionResult> Delete(int id = 0)
         {
-            var bookList = client.GetAsync(apiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result; 
+            var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookDetails?booklist=" + id)).Result; 
             if (bookList.IsSuccessStatusCode)
             {
                 string apiResponse = await bookList.Content.ReadAsStringAsync();
@@ -138,7 +144,7 @@ namespace Book_Swap_UI_Design.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var getEmployee = client.PostAsJsonAsync(apiUrl + "/DeleteBook", id).Result;
+            var getEmployee = client.PostAsJsonAsync(bookapiUrl + "/DeleteBook", id).Result;
             if (getEmployee.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -146,18 +152,39 @@ namespace Book_Swap_UI_Design.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult AddUserBookTransaction()
+        public async Task<IActionResult> AddUserBookTransaction()
         {
+            var bookList = client.GetAsync(bookapiUrl + string.Format("/GetBookLIst")).Result;
+            if (bookList.IsSuccessStatusCode)
+            {
+                string apiResponse = await bookList.Content.ReadAsStringAsync();
+                bookList1 = JsonConvert.DeserializeObject<List<BookList>>(apiResponse)!;
+                ViewBag.BookList = new SelectList(bookList1, "Id", "BookName");
+            }
+
+            var userlist = client.GetAsync(userapiUrl + string.Format("/UserList")).Result;
+            if (userlist.IsSuccessStatusCode)
+            {
+                string apiResponse = await userlist.Content.ReadAsStringAsync();
+                userList1 = JsonConvert.DeserializeObject<List<User>>(apiResponse)!;
+                ViewBag.UserList = new SelectList(userList1, "Id", "UserName");
+            }
             return View();
         }
         [HttpPost]
-        public IActionResult AddUserBookTransaction(UserBookTransaction UserBookTransaction)
+        public IActionResult AddUserBookTransactions(UserBookTransaction UserBookTransaction)
         {
+
+            string borrowerID = Convert.ToString(Request.Form["UserDropList"]);
+            string bookID = Convert.ToString(Request.Form["BookDropList"]);
+
+            UserBookTransaction.BorrowerId = Convert.ToInt32(borrowerID);
+            UserBookTransaction.BookId = Convert.ToInt32(bookID);
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var getEmployee = client.PostAsJsonAsync("/AddUserBookTransaction", UserBookTransaction).Result;
+                    var getEmployee = client.PostAsJsonAsync(bookapiUrl +string.Format("/AddUserBookTransaction"), UserBookTransaction).Result;
                     if (getEmployee.IsSuccessStatusCode)
                     {
                         return View();
@@ -177,23 +204,31 @@ namespace Book_Swap_UI_Design.Controllers
         [HttpPost]
         public ActionResult UpdateUserBookTransaction(UserBookTransaction UserBookTransaction)
         {
-            var getEmployee = client.PostAsJsonAsync("/UpdateUserBookTransaction", UserBookTransaction).Result;
-            if (getEmployee.IsSuccessStatusCode)
+            string borrowerID = Convert.ToString(Request.Form["UserDropList"]);
+            string bookID = Convert.ToString(Request.Form["BookDropList"]);
+
+            UserBookTransaction.BorrowerId = Convert.ToInt32(borrowerID);
+            UserBookTransaction.BookId = Convert.ToInt32(bookID);
+
+            var userbooktransaction = client.PostAsJsonAsync(bookapiUrl + string.Format("/UpdateUserBookTransaction"), UserBookTransaction).Result;
+            if (userbooktransaction.IsSuccessStatusCode)
             {
-                return View();
+                return View("Index");
             }
-            return View(getEmployee);
+            return View("Index");
         }
-        public IActionResult GetUserBookTransaction()
+        public async Task<IActionResult> GetUserBookTransaction()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var bookList = client.GetAsync(apiUrl + string.Format("/GetUserBookTransaction")).Result;
+                    var bookList = client.GetAsync(bookapiUrl + string.Format("/GetUserBookTransaction")).Result;
                     if (bookList.IsSuccessStatusCode)
                     {
-                        return View(bookList);
+                        string apiResponse = await bookList.Content.ReadAsStringAsync();
+                        List<UserBookTransaction> userBookTransactions = JsonConvert.DeserializeObject<List<UserBookTransaction>>(apiResponse)!;
+                        return View(userBookTransactions);
                     }
                 }
                 return View();
@@ -215,7 +250,7 @@ namespace Book_Swap_UI_Design.Controllers
                     {
                         searchText = "";
                     }
-                    var bookList = client.GetAsync(apiUrl + string.Format("/SearchBook?searchText=" + searchText)).Result;
+                    var bookList = client.GetAsync(bookapiUrl + string.Format("/SearchBook?searchText=" + searchText)).Result;
                     
                     if (bookList.IsSuccessStatusCode)
                     {
