@@ -21,8 +21,6 @@ namespace Book_Swap_Service.Interface
         public List<GetUserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
         public void DeleteUserBookTransaction(UserBookTransaction userBookTransactionID);
         public UserBookTransaction GetUserBookTransactionDetails(int userBookTransactionID);
-
-        public List<UserBookTransaction> GetUserBookTransaction(int borrowerId, int lenderId);
         public void RequestBook(RequestBook request);
     }
 }

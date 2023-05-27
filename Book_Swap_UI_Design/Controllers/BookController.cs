@@ -21,7 +21,7 @@ namespace Book_Swap_UI_Design.Controllers
         public BookController()
         {
             client = new HttpClient();
-            bookapiUrl = "https://localhost:7177/api/Book";
+            bookapiUrl = "http://localhost:81/api/Book";
             bookList1 = new List<BookList>();
             bookDetails = new BookList();
             userList1 = new List<User>();
@@ -315,15 +315,15 @@ namespace Book_Swap_UI_Design.Controllers
             }
             return View(userBookTransactionDetails);
         }
-        [HttpPost, ActionName("DeleteUserBookTransaction")]
+        [HttpPost, ActionName("DeleteUserBookTransactionDetails")]
         public ActionResult DeleteUserBookTransactionConfirmed(int id)
         {
             var userBookTransaction = client.PostAsJsonAsync(bookapiUrl + "/DeleteUserBookTransaction", id).Result;
             if (userBookTransaction.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("GetUserBookTransaction");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("GetUserBookTransaction");
         }
         protected override void Dispose(bool disposing)
         {
