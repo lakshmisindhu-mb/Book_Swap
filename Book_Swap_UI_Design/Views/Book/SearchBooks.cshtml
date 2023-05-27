@@ -40,12 +40,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -74,13 +74,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                </td>*@
+                @if (User.Identity.IsAuthenticated)
                 {
                     <td>
                         @Html.ActionLink("Request", "", new { id=item.Id  }) |

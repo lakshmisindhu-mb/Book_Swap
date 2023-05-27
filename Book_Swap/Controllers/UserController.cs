@@ -54,7 +54,7 @@ namespace Book_Swap_API.Controllers
                 }
                 else
                 {
-                    crudStatus.Message = "Email Already Exist";
+                    crudStatus.Message = "Email Already Exists";
                 }
                 return new JsonResult(crudStatus);
             }
@@ -157,7 +157,7 @@ namespace Book_Swap_API.Controllers
             try
             {
                 var response = userInterface.RateUser(request);
-               
+                crudStatus.Message = "User Rated Successfully";
                 return new JsonResult(response);
             }
             catch (Exception ex)
@@ -173,7 +173,7 @@ namespace Book_Swap_API.Controllers
             try
             {
                 userDetail = userInterface.GetUserDetails(user);
-                crudStatus.Message = "User Details";
+                crudStatus.Message = "User Details fetched Successfully";
 
             }
             catch (Exception ex)
