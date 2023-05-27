@@ -8,10 +8,10 @@
 <br />
 
 
-@using (Html.BeginForm("SearchBook", "Book"))
+@using (Html.BeginForm("SearchBooks", "Book"))
 {
    @* @Html.TextBox("searchText")*@
-    <input type="text" name="searchText" />
+    <input type="text"  placeholder="Enter Book Name" name="searchText" />
 
     <input type="submit" value="Submit" />
 }
@@ -40,12 +40,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -74,16 +74,19 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
-                    @Html.ActionLink("Request", "", new { id=item.Id  }) |
+                </td>*@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        @Html.ActionLink("Request", "", new { id=item.Id  }) |
                    
                 </td>
+                }
             </tr>
         }
     </tbody>

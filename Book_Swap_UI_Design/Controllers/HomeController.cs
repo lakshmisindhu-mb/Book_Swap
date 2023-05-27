@@ -1,8 +1,11 @@
 ﻿using Book_Swap_Models;
 using Book_Swap_Models.Models;
 using Book_Swap_UI_Design.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Book_Swap_UI_Design.Controllers
 {
@@ -38,7 +41,7 @@ namespace Book_Swap_UI_Design.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginModel login)
+        public async Task<ActionResult> Login(LoginModel login)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +55,40 @@ namespace Book_Swap_UI_Design.Controllers
                 var user = client.PostAsJsonAsync(apiUrl + string.Format("/Login"), obj).Result;
                 if (user.IsSuccessStatusCode)
                 {
-                    return Redirect("/home/welcomepage");
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, login.UserName),
+                        new Claim(ClaimTypes.Email, login.UserName)                        
+                    };
+
+                    Claim role;
+
+                    if (login.UserName.StartsWith("admin"))
+                    {
+                        role = new Claim(ClaimTypes.Role, "Admin");
+                    }
+                    else
+                    {
+                        role = new Claim(ClaimTypes.Role, "User");
+                    }
+
+                    claims.Add(role);
+
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {                        
+                        IsPersistent = false,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    return Redirect("/home/index");
                 }
                 else
                 {
@@ -89,6 +125,14 @@ namespace Book_Swap_UI_Design.Controllers
                 }
             }
             return View(registerModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+               CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
     }
 }
