@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Book_Swap_Models\Book_Swap_Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
-
 </Project>
